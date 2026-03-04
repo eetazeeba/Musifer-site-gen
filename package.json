@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node start-local-site.js",
     "build:css": "sass styles.scss styles.css --no-source-map",
-    "watch:css": "sass --watch styles.scss:styles.css"
+    "watch:css": "sass --watch styles.scss:styles.css",
+    "cms:validate": "node scripts/cms/validate-content.js",
+    "cms:index": "node scripts/cms/build-index.js",
+    "cms:check": "npm run cms:validate && npm run cms:index"
   },
   "devDependencies": {
     "sass": "^1.80.0"

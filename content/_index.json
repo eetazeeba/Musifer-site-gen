@@ -1,0 +1,114 @@
+{
+  "generated_at": "2026-03-04T00:14:32.063Z",
+  "totals": {
+    "entries": 3,
+    "blog": 1,
+    "profiles": 1,
+    "lessons": 1
+  },
+  "entries": [
+    {
+      "id": "ava-rivera",
+      "slug": "ava-rivera",
+      "type": "profile",
+      "status": "published",
+      "title": "Ava Rivera",
+      "summary": "Vocal collaborator and co-producer on recent releases.",
+      "tags": [
+        "collaborator",
+        "vocals",
+        "producer"
+      ],
+      "media_types": [
+        "image",
+        "embed"
+      ],
+      "author": [
+        "Eeta Zeeba"
+      ],
+      "published_at": "2026-03-03",
+      "updated_at": "2026-03-03",
+      "related_ids": [],
+      "source": "content/profiles/ava-rivera.md"
+    },
+    {
+      "id": "lesson-melodic-phrasing",
+      "slug": "lesson-melodic-phrasing",
+      "type": "lesson",
+      "status": "draft",
+      "title": "Melodic Phrasing 101",
+      "summary": "Intro lesson focused on phrase length and contour.",
+      "tags": [
+        "lesson",
+        "melody",
+        "beginner"
+      ],
+      "media_types": [
+        "video",
+        "sheet"
+      ],
+      "author": [
+        "Eeta Zeeba"
+      ],
+      "published_at": "2026-03-03",
+      "updated_at": "2026-03-03",
+      "related_ids": [
+        "writing-better-hooks"
+      ],
+      "source": "content/lessons/lesson-melodic-phrasing.md"
+    },
+    {
+      "id": "writing-better-hooks",
+      "slug": "writing-better-hooks",
+      "type": "blog",
+      "status": "published",
+      "title": "Writing Better Hooks",
+      "summary": "Practical hook-writing ideas with short audio demos.",
+      "tags": [
+        "songwriting",
+        "hooks",
+        "melody"
+      ],
+      "media_types": [
+        "image",
+        "audio"
+      ],
+      "author": [
+        "Eeta Zeeba"
+      ],
+      "published_at": "2026-03-03",
+      "updated_at": "2026-03-03",
+      "related_ids": [
+        "lesson-melodic-phrasing"
+      ],
+      "source": "content/blog/writing-better-hooks.md"
+    }
+  ],
+  "tags": {
+    "collaborator": [
+      "ava-rivera"
+    ],
+    "vocals": [
+      "ava-rivera"
+    ],
+    "producer": [
+      "ava-rivera"
+    ],
+    "lesson": [
+      "lesson-melodic-phrasing"
+    ],
+    "melody": [
+      "lesson-melodic-phrasing",
+      "writing-better-hooks"
+    ],
+    "beginner": [
+      "lesson-melodic-phrasing"
+    ],
+    "songwriting": [
+      "writing-better-hooks"
+    ],
+    "hooks": [
+      "writing-better-hooks"
+    ]
+  }
+}

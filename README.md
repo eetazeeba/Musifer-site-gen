@@ -4,61 +4,21 @@ Overview
 - This project contains a minimal `index.html`, `styles.scss`, and a compiled `styles.css`.
 - `package.json` provides npm scripts to build or watch the SCSS file.
 
-Quick setup
-1. Install Node.js + npm (if not installed): https://nodejs.org/
-2. From the project folder, install dev dependencies:
+CMS planning notes (in progress)
+- Goal: dependency-light, native file-based content management for `blog`, `profile`, and `lesson` content.
+- Start with a shared `blog`/`lesson` base model; a lesson-specific template can be added later.
+- Metadata priorities: `published_at`, `updated_at`, `author`, `copyright`, `media_types`, and multi-tag navigation.
+- Front matter format: YAML.
+- Date format: ISO 8601 (for example: `2026-03-03`).
+- Multi-tag entries are supported for convenience and cross-navigation.
+- Eleventy split remains optional later (`eleventy-only` branch is preserved for that path).
+- Next comparison step after first-pass schema: evaluate external/prebuilt CMS options.
+- Jamstack path note: Decap CMS is the leading free candidate and can integrate cleanly with Eleventy content workflows if we revive the 11ty track.
 
-```bash
-npm install
-```
+CMS script usage
+- `npm run cms:validate`: checks required front matter fields, enums, date formats, and cross-entry `related_ids`.
+- `npm run cms:index`: builds `content/_index.json` for listing pages, tag pages, and lightweight lookup.
+- `npm run cms:check`: runs validation first, then index generation (recommended before commit/publish).
+- Content source directories:
+  `content/blog`, `content/profiles`, `content/lessons`
 
-3. Build the CSS once:
-
-```bash
-npm run build:css
-```
-
-4. Watch SCSS for changes (auto-compile):
-
-```bash
-npm run watch:css
-```
-
-5. Start a local website server (works on macOS, Windows, Linux):
-
-```bash
-npm start
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8080
-```
-
-One-click launchers
-- macOS: double-click `launch-local-site.command`
-- Windows: double-click `launch-local-site.bat`
-- Both wrappers start the same local server and print the URL to open.
-
-What is npm (brief)
-- `npm` is the Node package manager. It installs packages, manages versions, and runs scripts defined in `package.json`.
-- `package.json` is the project's manifest: metadata, dependencies, and scripts.
-
-Useful commands
-- `npm init` — create a new `package.json` interactively.
-- `npm install <pkg>` — install a package and add to `dependencies`.
-- `npm install -D <pkg>` or `npm install --save-dev <pkg>` — install a devDependency.
-- `npm run <script>` — run a script from the `scripts` section of `package.json`.
-- `npx <pkg>` — run a binary from a package without installing globally.
-
-Why use npm here
-- Keeps the SCSS compiler (`sass`) as a project-local dependency so collaborators use the same version.
-- Scripts provide simple, reproducible commands (`npm run build:css`, `npm run watch:css`).
-
-Reference links
-- npm docs: https://docs.npmjs.com/
-- Sass install & docs: https://sass-lang.com/install
-- Node.js: https://nodejs.org/
-
-The `npm start` command runs `start-local-site.js`, a cross-platform local HTTP server script in this project.
