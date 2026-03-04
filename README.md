@@ -1,17 +1,22 @@
-# Eleventy experiment
+﻿# Musifer (Eleventy + CMS)
 
-Run this experimental Eleventy site locally from the `11ty/` folder.
+## Overview
+- Site builds from `src/` using Eleventy.
+- Content source of truth is in `content/`.
+- CMS helper scripts live in `scripts/cms/`.
 
-Install dependencies and start the dev server:
+## Run
+- `npm install`
+- `npm run start` for local dev server
+- `npm run build` for production build
 
-```bash
-cd 11ty
-npm install
-npm start
-```
+## CMS scripts
+- `npm run cms:validate`: validates front matter, enums, date formats, and relationships.
+- `npm run cms:index`: regenerates `content/_index.json`.
+- `npm run cms:check`: validate then index (recommended pre-commit).
 
-The site input is `src/` and the output will be `_site/`.
-
-Notes:
-- This is an experimental branch that copies the existing site markup into an Eleventy template and an `_includes/header.html` partial.
-- CSS and images are copied into `src/CSS` and `src/Images` for passthrough.
+## Key dirs
+- `src/`: Eleventy templates, includes, assets
+- `content/`: blog/profile/lesson content entries
+- `docs/`: content specs and sitemap notes
+- `scripts/cms/`: validation and index generators

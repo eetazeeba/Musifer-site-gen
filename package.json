@@ -1,12 +1,17 @@
-{
-  "name": "musifer-11ty-experimental",
-  "version": "0.1.0",
+﻿{
+  "name": "musifer-11ty-cms",
+  "version": "0.2.0",
   "private": true,
+  "description": "Eleventy site with file-based CMS validation and indexing tools.",
   "scripts": {
     "start": "npx @11ty/eleventy --serve --input=src --output=_site --watch",
-    "build": "npx @11ty/eleventy --input=src --output=_site"
+    "build": "npx @11ty/eleventy --input=src --output=_site",
+    "cms:validate": "node scripts/cms/validate-content.js",
+    "cms:index": "node scripts/cms/build-index.js",
+    "cms:check": "npm run cms:validate && npm run cms:index"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.0"
+    "@11ty/eleventy": "^2.0.0",
+    "sass": "^1.80.0"
   }
 }
