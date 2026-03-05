@@ -4,7 +4,7 @@ backend:
   branch: jamstack-builder
 
 local_backend: true
-media_folder: "src/Images/uploads"
+media_folder: "src/_assets/Images/uploads"
 public_folder: "/Images/uploads"
 
 collections:

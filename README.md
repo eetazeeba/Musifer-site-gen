@@ -4,6 +4,7 @@
 - Site builds from `src/` using Eleventy.
 - Content source of truth is in `content/`.
 - CMS helper scripts live in `scripts/cms/`.
+- Static site assets are grouped under `src/_assets/` and published as `/CSS`, `/Images`, and `/scripts`.
 
 ## Run
 - `npm install`
@@ -19,7 +20,7 @@
 ## Decap scaffold status
 - Admin UI scaffold: `src/admin/index.html`
 - Decap config scaffold: `src/admin/config.yml`
-- Upload target: `src/Images/uploads/` (served as `/Images/uploads`)
+- Upload target: `src/_assets/Images/uploads/` (served as `/Images/uploads`)
 - Eleventy passthrough includes `src/admin/config.yml`
 - Promotion convention: add `featured` in `tags` for entries that should surface on home/highlight modules.
 
@@ -32,7 +33,8 @@
 `src/admin/config.yml` is currently set to branch `jamstack-builder` so Decap authoring stays off `main` while this setup is in progress.
 
 ## Key dirs
-- `src/`: Eleventy templates, includes, assets
+- `src/`: Eleventy templates, includes, and route directories
+- `src/_assets/`: static assets mapped to stable public paths (`/CSS`, `/Images`, `/scripts`)
 - `content/`: blog/profile/lesson content entries
 - `docs/`: content specs and sitemap notes
 - `scripts/cms/`: validation and index generators
