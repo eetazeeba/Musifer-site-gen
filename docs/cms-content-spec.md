@@ -9,6 +9,7 @@ Purpose
 - Date format: ISO 8601 (`YYYY-MM-DD`).
 - IDs and slugs: lowercase, URL-safe, hyphenated.
 - Tags: multiple tags are allowed and recommended.
+- Promotion tag convention: use `featured` to mark entries for homepage/highlight placement.
 
 ## Directory model
 ```text
@@ -32,7 +33,7 @@ Required fields
 - `published_at` (date string, ISO 8601).
 - `updated_at` (date string, ISO 8601).
 - `copyright` (string).
-- `tags` (list of strings, can be empty).
+- `tags` (list of strings, can be empty). Include `featured` when an entry should be promoted.
 - `media_types` (list): any of `image`, `audio`, `video`, `embed`, `sheet`, `download`.
 
 Recommended fields
@@ -77,7 +78,7 @@ author:
 published_at: 2026-03-03
 updated_at: 2026-03-03
 copyright: "Copyright (c) 2026 Musifer"
-tags: [songwriting, hooks, melody]
+tags: [featured, songwriting, hooks, melody]
 media_types: [image, audio]
 summary: Practical hook-writing ideas with short audio demos.
 related_ids: [lesson-melodic-phrasing]

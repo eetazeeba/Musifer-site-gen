@@ -8,7 +8,8 @@
     "build": "eleventy --input=src --output=_site",
     "cms:validate": "node scripts/cms/validate-content.js",
     "cms:index": "node scripts/cms/build-index.js",
-    "cms:check": "npm run cms:validate && npm run cms:index"
+    "cms:check": "npm run cms:validate && npm run cms:index",
+    "cms:local": "npx decap-server"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.0",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-04T05:05:58.522Z",
+  "generated_at": "2026-03-05T19:20:10.078Z",
   "totals": {
     "entries": 3,
     "blog": 1,
@@ -65,6 +65,7 @@
       "title": "Writing Better Hooks",
       "summary": "Practical hook-writing ideas with short audio demos.",
       "tags": [
+        "featured",
         "songwriting",
         "hooks",
         "melody"
@@ -103,6 +104,9 @@
     ],
     "beginner": [
       "lesson-melodic-phrasing"
+    ],
+    "featured": [
+      "writing-better-hooks"
     ],
     "songwriting": [
       "writing-better-hooks"

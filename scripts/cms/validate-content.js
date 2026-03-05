@@ -17,6 +17,7 @@ const TYPE_VALUES = new Set(["blog", "profile", "lesson"]);
 const STATUS_VALUES = new Set(["draft", "published", "archived"]);
 const MEDIA_VALUES = new Set(["image", "audio", "video", "embed", "sheet", "download"]);
 const LESSON_DIFFICULTY = new Set(["beginner", "intermediate", "advanced"]);
+const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function isIsoDate(value) {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
@@ -42,6 +43,10 @@ function validateEntry(entry) {
     errors.push(`invalid type '${data.type}'`);
   }
 
+  if (data.id !== undefined && (typeof data.id !== "string" || !ID_PATTERN.test(data.id))) {
+    errors.push("id must be lowercase URL-safe text (letters, numbers, hyphens)");
+  }
+
   if (data.status !== undefined && !STATUS_VALUES.has(data.status)) {
     errors.push(`invalid status '${data.status}'`);
   }
@@ -60,6 +65,8 @@ function validateEntry(entry) {
 
   if (!Array.isArray(data.tags)) {
     errors.push("tags must be a list");
+  } else if (data.tags.some((value) => typeof value !== "string")) {
+    errors.push("tags must contain only strings");
   }
 
   if (!Array.isArray(data.media_types)) {
@@ -85,6 +92,8 @@ function validateEntry(entry) {
 
   if (data.related_ids !== undefined && !Array.isArray(data.related_ids)) {
     errors.push("related_ids must be a list");
+  } else if (Array.isArray(data.related_ids) && data.related_ids.some((value) => typeof value !== "string")) {
+    errors.push("related_ids must contain only strings");
   }
 
   if (data.author !== undefined) {
