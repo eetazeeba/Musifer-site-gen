@@ -33,7 +33,7 @@ collections:
         required: true
         hint: "Add 'featured' to promote this content on homepage/highlight surfaces."
         field: { label: Tag, name: value, widget: string }
-      - { label: Media Types, name: media_types, widget: select, multiple: true, required: true, options: [image, audio, video, embed, sheet, download] }
+      - { label: Media Types, name: media_types, widget: select, multiple: true, required: false, options: [image, audio, video, embed, sheet, download] }
       - { label: Summary, name: summary, widget: text, required: false }
       - label: Related IDs
         name: related_ids

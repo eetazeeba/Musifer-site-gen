@@ -1,12 +1,34 @@
 {
-  "generated_at": "2026-03-05T19:20:10.078Z",
+  "generated_at": "2026-03-05T22:48:34.011Z",
   "totals": {
-    "entries": 3,
-    "blog": 1,
+    "entries": 4,
+    "blog": 2,
     "profiles": 1,
     "lessons": 1
   },
   "entries": [
+    {
+      "id": "test-post-please-ignore",
+      "slug": "test-post-please-ignore",
+      "type": "blog",
+      "status": "draft",
+      "title": "Gotta start somewhere",
+      "summary": "The very first attempt at using Decap CMS to create content for the website.",
+      "tags": [
+        "featured",
+        "update, blog"
+      ],
+      "media_types": [
+        "image"
+      ],
+      "author": [
+        "Everett Ballance (eetazeeba)"
+      ],
+      "published_at": "2026-03-05",
+      "updated_at": "2026-03-05 15:43",
+      "related_ids": [],
+      "source": "content/blog/test-post-please-ignore.md"
+    },
     {
       "id": "ava-rivera",
       "slug": "ava-rivera",
@@ -86,6 +108,13 @@
     }
   ],
   "tags": {
+    "featured": [
+      "test-post-please-ignore",
+      "writing-better-hooks"
+    ],
+    "update, blog": [
+      "test-post-please-ignore"
+    ],
     "collaborator": [
       "ava-rivera"
     ],
@@ -104,9 +133,6 @@
     ],
     "beginner": [
       "lesson-melodic-phrasing"
-    ],
-    "featured": [
-      "writing-better-hooks"
     ],
     "songwriting": [
       "writing-better-hooks"

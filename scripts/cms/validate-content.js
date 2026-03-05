@@ -23,6 +23,10 @@ function isIsoDate(value) {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
+function isIsoDateMinute(value) {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(value);
+}
+
 function asArray(value) {
   if (Array.isArray(value)) return value;
   if (value === undefined || value === null || value === "") return [];
@@ -55,8 +59,12 @@ function validateEntry(entry) {
     errors.push("published_at must be ISO 8601 date (YYYY-MM-DD)");
   }
 
-  if (data.updated_at !== undefined && !isIsoDate(data.updated_at)) {
-    errors.push("updated_at must be ISO 8601 date (YYYY-MM-DD)");
+  if (
+    data.updated_at !== undefined &&
+    !isIsoDate(data.updated_at) &&
+    !isIsoDateMinute(data.updated_at)
+  ) {
+    errors.push("updated_at must be YYYY-MM-DD or YYYY-MM-DD HH:mm");
   }
 
   if (data.collaboration_start !== undefined && !isIsoDate(data.collaboration_start)) {

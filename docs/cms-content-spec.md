@@ -6,7 +6,7 @@ Purpose
 
 ## Format and conventions
 - File format: Markdown with YAML front matter.
-- Date format: ISO 8601 (`YYYY-MM-DD`).
+- Date format: ISO 8601 (`YYYY-MM-DD`) for date fields; `updated_at` may include minute precision (`YYYY-MM-DD HH:mm`).
 - IDs and slugs: lowercase, URL-safe, hyphenated.
 - Tags: multiple tags are allowed and recommended.
 - Promotion tag convention: use `featured` to mark entries for homepage/highlight placement.
@@ -31,7 +31,7 @@ Required fields
 - `status` (enum): `draft | published | archived`.
 - `author` (string or list of strings).
 - `published_at` (date string, ISO 8601).
-- `updated_at` (date string, ISO 8601).
+- `updated_at` (date or minute-precision datetime string, ISO 8601-ish: `YYYY-MM-DD` or `YYYY-MM-DD HH:mm`).
 - `copyright` (string).
 - `tags` (list of strings, can be empty). Include `featured` when an entry should be promoted.
 - `media_types` (list): any of `image`, `audio`, `video`, `embed`, `sheet`, `download`.
