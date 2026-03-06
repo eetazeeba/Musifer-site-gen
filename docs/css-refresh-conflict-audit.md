@@ -2,7 +2,7 @@
 
 Source of truth
 - Planning reference: `docs/responsive-layout-navigation-refresh-plan.md`
-- Prioritization applied from `## 6) Proposed implementation sequence` (Phase 1 -> Phase 3 first).
+- Prioritization applied from `## 6) Proposed implementation sequence` (Phase 1 -> Phase 3 first, including compact/hamburger accordion behavior).
 
 Scope reviewed
 - `src/_assets/CSS/header-nav.css`
@@ -13,6 +13,7 @@ Scope reviewed
 - `transition: all` on header/nav elements directly conflicts with Phase 1 guidance to transition only targeted properties.
 - Current nav CSS is structurally hamburger-first, while Phase 3 requires width-gated desktop/large-tablet horizontal dropdown behavior at `>= 992px`.
 - Dropdown visibility is currently driven by hover/focus selectors globally, which can conflict with upcoming JS state management (`aria-expanded`, single-open behavior, width gating).
+- In compact hamburger mode, child links are currently rendered open by default instead of accordion-expanding per parent item with children.
 - Existing breakpoint strategy (`max-width: 720px`) does not align with planned operational breakpoints (`768`, `992`, `1200`) and mobile-first direction.
 - SCSS source-of-edit coverage is incomplete for nav: active nav CSS was file-edited without a paired SCSS entrypoint, increasing drift risk during Phase 1+.
 
@@ -140,6 +141,31 @@ Scope reviewed
 - Severity: medium
 - Recommended action: isolate
 
+### 5) Hamburger mode keeps child links open by default (no accordion collapse state)
+- File path: `src/_assets/CSS/_nav.scss`
+- Selector/rule:
+  - `.mus-nav__submenu { display: block; ... }` in the mobile/tablet default block
+  - `.mus-nav__dropdown-toggle { display: none; }` in compact mode
+  - inline comment documents always-visible child links in hamburger mode
+- Why it conflicts:
+  - Updated plan now requires accordion-style expand/collapse for parent items with children in hamburger mode for narrow/compact viewports.
+  - Always-open child lists increase initial menu height and hurt scannability on short screens.
+  - Hidden toggles in compact mode prevent explicit submenu control.
+- Severity: high
+- Recommended action: refactor
+
+### 6) Dropdown JS is desktop-gated and does not provide compact accordion behavior
+- File path: `src/_assets/scripts/header-nav.js`
+- Selector/rule:
+  - `DESKTOP_DROPDOWN_MEDIA = window.matchMedia('(min-width: 992px)')`
+  - dropdown toggle click exits early outside desktop mode (`if (!isDesktopDropdownMode()) return;`)
+  - no mobile/compact submenu state branch for `[data-dropdown-root]`
+- Why it conflicts:
+  - Compact/hamburger accordion behavior requires explicit open/close state management below desktop mode.
+  - Without a compact branch, parent items with children cannot collapse/expand predictably with keyboard and touch parity.
+- Severity: high
+- Recommended action: refactor
+
 ## Optional: Later-phase layout/content issues (secondary)
 
 ### 1) Content layout is largely single-range with no planned breakpoint ladder
@@ -173,3 +199,7 @@ Scope reviewed
    - desktop/large-tablet dropdown activation at `min-width: 992px`
 5. Scope dropdown open rules to the desktop nav mode and JS state classes/attributes to avoid hover-only conflicts.
 6. Isolate hamburger-only rules so they do not leak into the desktop dropdown mode during Phase 3 rollout.
+7. Add compact/hamburger accordion defaults:
+   - child submenu panels collapsed by default
+   - explicit expanded state on parent group (for example `.is-open` + `aria-expanded="true"`)
+8. Add compact-mode JS handling for submenu toggles (touch + keyboard), with close-on-Escape and focus-safe collapse behavior.

@@ -9,6 +9,7 @@ Current baseline (as of 2026-03-05)
 - Navigation behavior is in `src/_assets/scripts/header-nav.js`.
 - Navigation styling is in `src/_assets/CSS/header-nav.css`.
 - Current header is sticky (`.mus-nav--sticky`) with hamburger behavior and partial dropdown styles.
+- In hamburger mode, parent items with children currently expose child links immediately; this should move to accordion expand/collapse behavior.
 
 ## 1) Header interaction refresh: hide on scroll down, reveal on scroll up
 
@@ -69,6 +70,14 @@ Breakpoint activation
 - Keep hamburger nav for small/medium tablet.
 - Switch to horizontal dropdown mode at a large-tablet breakpoint (recommended `min-width: 992px`).
 
+Compact-mode accordion requirement (hamburger nav)
+- In hamburger mode, parent items with children should be collapsed by default and expand/collapse vertically on toggle.
+- Apply accordion behavior to narrow viewports (`<= 991px`) and compact-height cases where hamburger mode is active.
+- Avoid hover-only behavior in compact mode; use explicit toggle/button state and `aria-expanded`.
+- Keep parent links usable, with submenu expansion handled by a dedicated toggle control.
+- Prefer one expanded submenu at a time in compact mode to reduce vertical menu sprawl.
+- Include keyboard support (`Enter`/`Space` to toggle, `Escape` to collapse current submenu).
+
 ## 3) Breakpoint strategy (recommended ranges)
 
 Core ranges
@@ -84,6 +93,9 @@ Operational breakpoints for this refresh
   - enable horizontal nav + dropdown interaction model
 - `min-width: 1200px`:
   - enable wider multi-column content and denser card rail viewport
+- `max-height: 700px` (compact-height guardrail):
+  - keep navigation interaction compact and avoid exposing all nested links at once
+  - if hamburger mode is active, use accordion submenu behavior to limit initial menu height
 
 Notes
 - These values align with the current request for desktop + large-tablet horizontal navigation.
@@ -201,9 +213,14 @@ Phase 2: Header scroll behavior
 - Extend `header-nav.js` with direction-aware hide/reveal logic.
 - Add hysteresis and focus/menu-open safeguards.
 
-Phase 3: Desktop/large-tablet dropdown nav
-- Update `header.html` structure for top-level items + child panels.
-- Add ARIA/state wiring in JS and width-gated interaction logic.
+Phase 3: Navigation interaction parity across viewport modes
+- Desktop/large-tablet (`min-width: 992px`):
+  - update `header.html` structure for top-level items + child panels
+  - keep ARIA/state wiring in JS and width-gated dropdown interaction logic
+- Hamburger/compact mode (`<= 991px` and compact-height hamburger cases):
+  - implement accordion submenu behavior for parent items with children
+  - keep child lists collapsed by default, expanded by explicit toggle state
+  - preserve parent-link usability and keyboard support in expanded/collapsed states
 
 Phase 4: Content modules
 - Introduce reusable utility/component classes for:
@@ -223,5 +240,6 @@ Phase 5: QA and hardening
 - Header remains accessible and visible during keyboard interaction.
 - Horizontal dropdown nav is active and stable at `>=992px`.
 - Mobile/tablet retain clear, predictable navigation with touch-friendly controls.
+- In hamburger/compact mode, parent items with children expand/collapse as accordions instead of rendering all child links at once.
 - Content modules gracefully shift among stacked, rail, and multi-column patterns by breakpoint.
 - No critical accessibility regressions in nav semantics, focus order, or screen-reader labels.
