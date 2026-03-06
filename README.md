@@ -1,4 +1,4 @@
-﻿# Musifer (Eleventy + CMS)
+﻿# Musifer (Eleventy + Decap CMS)
 
 ## Overview
 - Site builds from `src/` using Eleventy.
