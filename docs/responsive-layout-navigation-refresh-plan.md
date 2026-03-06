@@ -14,8 +14,22 @@ Current baseline (as of 2026-03-05)
 Implementation status (as of 2026-03-06)
 - Phase 1 (foundation): complete.
 - Phase 2 (header scroll behavior): complete.
-- Phase 3 (desktop dropdown + compact disclosures): complete baseline, with follow-up refinements now queued.
-- Phase 4 (content modules): pending, not yet executed.
+- Phase 3 (desktop dropdown + compact disclosures + refinements): complete.
+- Phase 4 (content modules): pending, not started.
+
+Phase 3 completion summary (as of 2026-03-06)
+- Delivered baseline desktop dropdown and compact disclosure behavior parity.
+- Delivered nav/brand legibility refinements (wordmark balance, top-level delineation, parent/toggle affordance cleanup).
+- Delivered compact tray geometry refactor to right-edge drawer behavior in hamburger-visible states.
+- Delivered dropdown toggle icon refactor with triangle icon treatment and clearer open-state signal.
+- Intentionally preserved:
+  - Phase 2 hide/reveal scroll contract
+  - Phase 3 desktop dropdown interaction model
+  - compact accordion/disclosure behavior
+- Explicitly deferred:
+  - nav architecture rewrite
+  - CMS rendering/model overhaul
+  - any Phase 4 implementation work
 
 ## 1) Header interaction refresh: hide on scroll down, reveal on scroll up
 
@@ -98,6 +112,14 @@ Post-cutover refinement criteria (new)
 - Compact-mode icon/link spacing (`<= 991px`, especially near `992px` transition):
   - Reduce excessive gap between parent link labels and submenu toggle icons in hamburger mode.
   - Use stable alignment rules so link text and toggle stay visually associated in medium-width compact layouts.
+- Compact tray geometry in hamburger-visible states:
+  - Replace full-width compact tray presentation with a narrower right-aligned tray anchored to the hamburger-side edge.
+  - Apply this consistently anywhere hamburger mode is active (`<= 991px` and compact-height fallback states).
+  - Keep this as a CSS-only presentation refactor; preserve markup, JS behavior contracts, and accessibility semantics.
+- Dropdown toggle icon treatment:
+  - Replace bulky circular compact toggle presentation with cleaner triangle icon treatment that remains legible across desktop and compact modes.
+  - Keep parent links and toggle buttons as distinct controls while improving visual cohesion.
+  - Preserve open/closed readability through icon state styling rather than heavy control chrome.
 
 ## 3) Breakpoint strategy (recommended ranges)
 
@@ -243,17 +265,66 @@ Phase 3: Navigation interaction parity across viewport modes (implemented baseli
   - keep child lists collapsed by default, expanded by explicit toggle state
   - preserve parent-link usability and keyboard support in expanded/collapsed states
 
-Phase 3 follow-up: Nav/brand legibility refinements (pending)
-- Increase header wordmark prominence and rebalance icon/text lockup sizing.
-- Resolve split-trigger friction for parent nav items with children (prefer unified or clearer interaction contract).
-- Add stronger top-level nav item delineation for readability and scan speed.
-- Tighten compact-mode link/toggle spacing just below desktop breakpoint.
+Phase 3 follow-up: Nav/brand legibility refinements (completed)
+- Increased header wordmark prominence and rebalanced icon/text lockup sizing.
+- Improved split-control affordance so parent links and toggles read as a clearer control cluster.
+- Added stronger top-level nav delineation for desktop/large-tablet scanability.
+- Tightened compact-mode link/toggle spacing just below desktop breakpoint.
+
+Phase 3 follow-up: Compact tray geometry + toggle icon refactor (completed)
+- Converted compact/hamburger tray from full-width strip into right-edge drawer behavior in hamburger-visible states.
+- Preserved compact disclosure/accordion behavior and parent-link usability.
+- Refined row highlight/association treatment for parent link + toggle controls.
+- Replaced the prior bulky circular toggle treatment with triangle-icon-driven state styling.
+- Guardrails preserved in implementation:
+  - no nav logic rewrite in `header-nav.js`
+  - no semantic navigation structure rewrite in `header.html`
+  - no Phase 4 content-module work in this pass
 
 Phase 4: Content modules (pending; not started)
-- Introduce reusable utility/component classes for:
-  - responsive grid columns
-  - card rail + scroll-snap variants
-  - stacked-card defaults
+- Goals
+  - Introduce reusable content-module primitives for responsive layout composition.
+  - Standardize module behavior across narrow, medium, and wide breakpoints without changing CMS rendering contracts.
+- Likely CSS/SCSS scope
+  - Primary scope: `src/_assets/CSS/_layout.scss`, `src/_assets/CSS/_components.scss`.
+  - Support scope: utility partial patterns in existing SCSS organization (`_tokens.scss`/`_base.scss` only as needed for shared variables and spacing rhythm).
+  - Keep `header`/nav styles out of scope except for overlap bug fixes discovered during module QA.
+- Utility/component boundaries
+  - Responsive grid utilities:
+    - column-count and span helpers for 1/2/3-column module layouts
+    - consistent gutter and max-width behavior by breakpoint
+  - Card rail + scroll-snap components:
+    - horizontal rail container variant
+    - snap-enabled card child variant
+    - optional non-snap rail fallback class
+  - Stacked-card defaults:
+    - narrow-screen single-column card stack defaults
+    - variant modifiers for density (`compact`, `comfortable`) and emphasis (`featured`)
+- Breakpoint expectations
+  - `<= 767px`: stacked defaults, touch-first spacing, single-column card flow.
+  - `768-991px`: optional two-column module layouts where readability remains strong.
+  - `992-1199px`: expand rails/grid density with controlled card widths.
+  - `1200px+`: enable widest module variants and denser card rails.
+- Risks and watchpoints
+  - Overflow and clipping issues in horizontal rails within constrained containers.
+  - Scroll-snap usability on mixed input devices (touch, trackpad, mouse wheel).
+  - Focus visibility and keyboard traversal order across rail/card controls.
+  - Cascade conflicts with existing legacy layout styles in `_layout.scss`.
+- Suggested implementation sequence
+  1. Define utility primitives (grid columns, spacing/gutter helpers).
+  2. Add base rail + scroll-snap component classes.
+  3. Add stacked-card defaults and variant modifiers.
+  4. Integrate on a minimal set of pilot modules.
+  5. Run breakpoint/accessibility QA and adjust utility boundaries.
+- Acceptance criteria
+  - Content modules can be composed via reusable classes without one-off CSS per page.
+  - Grid, rail, and stacked variants behave predictably across all target breakpoints.
+  - Scroll-snap variants remain usable and accessible with keyboard and touch inputs.
+  - No regressions in header/nav behavior while Phase 4 module styles are introduced.
+- Phase 4 out-of-scope
+  - CMS schema/model changes
+  - template architecture rewrite or page-builder abstraction layer
+  - cross-site design-system migration beyond this repository’s current CSS architecture
 
 Phase 5: QA and hardening
 - Keyboard-only navigation checks (Tab, Shift+Tab, Escape).
@@ -271,6 +342,8 @@ Phase 5: QA and hardening
 - Header brand lockup has clear wordmark impact (text no longer reads undersized next to logo icon).
 - Parent-item submenu behavior does not produce hover-open / click-close confusion.
 - Top-level nav items are visually delineated enough for quick scan at desktop and large-tablet widths.
-- Compact-mode parent links and submenu toggles remain visually grouped and legible near the `992px` transition band.
+- Compact tray renders as a narrow right-aligned panel (not full-width) in all hamburger-visible states.
+- Compact-mode parent links and submenu toggles remain visually grouped as a tight pair near the `992px` transition band.
+- Dropdown toggle icon treatment is legible and cohesive in both desktop dropdown and compact drawer states.
 - Content modules gracefully shift among stacked, rail, and multi-column patterns by breakpoint.
 - No critical accessibility regressions in nav semantics, focus order, or screen-reader labels.
