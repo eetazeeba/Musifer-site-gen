@@ -1,6 +1,8 @@
 (function () {
   var navRoots = document.querySelectorAll('[data-nav-root]');
   if (!navRoots.length) return;
+  var DESKTOP_DROPDOWN_MEDIA = window.matchMedia('(min-width: 992px)');
+  var DROPDOWN_CLOSE_DELAY_MS = 140;
   var SCROLL_TOP_THRESHOLD = 12;
   var SCROLL_DEAD_ZONE = 10;
   var lastY = getScrollY();
@@ -20,6 +22,7 @@
   function shouldForceVisible(root, currentY) {
     if (currentY <= SCROLL_TOP_THRESHOLD) return true;
     if (root.classList.contains('is-open')) return true;
+    if (root.classList.contains('has-dropdown-open')) return true;
     if (rootHasFocus(root)) return true;
     return false;
   }
@@ -106,28 +109,110 @@
   function closeAllDropdowns(scope) {
     var dropdowns = scope.querySelectorAll('[data-dropdown-root]');
     dropdowns.forEach(function (dropdown) {
+      clearDropdownCloseTimer(dropdown);
       dropdown.classList.remove('is-open');
       var button = dropdown.querySelector('[data-dropdown-toggle]');
       if (button) {
         button.setAttribute('aria-expanded', 'false');
       }
     });
+    scope.classList.remove('has-dropdown-open');
+    requestScrollStateUpdate();
+  }
+
+  function isDesktopDropdownMode() {
+    return DESKTOP_DROPDOWN_MEDIA.matches;
+  }
+
+  function syncDropdownOpenState(root) {
+    var hasOpenDropdown = !!root.querySelector('[data-dropdown-root].is-open');
+    root.classList.toggle('has-dropdown-open', hasOpenDropdown);
+    requestScrollStateUpdate();
+  }
+
+  function clearDropdownCloseTimer(dropdownRoot) {
+    var closeTimerId = dropdownRoot.dataset.closeTimerId;
+    if (!closeTimerId) return;
+    window.clearTimeout(Number(closeTimerId));
+    delete dropdownRoot.dataset.closeTimerId;
+  }
+
+  function scheduleDropdownClose(root, dropdownRoot) {
+    clearDropdownCloseTimer(dropdownRoot);
+    dropdownRoot.dataset.closeTimerId = String(window.setTimeout(function () {
+      if (!isDesktopDropdownMode()) return;
+      var active = document.activeElement;
+      if (active && dropdownRoot.contains(active)) return;
+      dropdownRoot.classList.remove('is-open');
+      var button = dropdownRoot.querySelector('[data-dropdown-toggle]');
+      if (button) {
+        button.setAttribute('aria-expanded', 'false');
+      }
+      syncDropdownOpenState(root);
+    }, DROPDOWN_CLOSE_DELAY_MS));
+  }
+
+  function openDropdown(root, dropdownRoot) {
+    if (!isDesktopDropdownMode()) return;
+
+    closeAllDropdowns(root);
+    clearDropdownCloseTimer(dropdownRoot);
+    dropdownRoot.classList.add('is-open');
+    var button = dropdownRoot.querySelector('[data-dropdown-toggle]');
+    if (button) {
+      button.setAttribute('aria-expanded', 'true');
+    }
+    syncDropdownOpenState(root);
+  }
+
+  function closeDropdown(root, dropdownRoot) {
+    clearDropdownCloseTimer(dropdownRoot);
+    dropdownRoot.classList.remove('is-open');
+    var button = dropdownRoot.querySelector('[data-dropdown-toggle]');
+    if (button) {
+      button.setAttribute('aria-expanded', 'false');
+    }
+    syncDropdownOpenState(root);
   }
 
   function setupDropdowns(root) {
-    var toggles = root.querySelectorAll('[data-dropdown-toggle]');
-    toggles.forEach(function (toggle) {
+    var dropdowns = root.querySelectorAll('[data-dropdown-root]');
+
+    dropdowns.forEach(function (dropdownRoot) {
+      var toggle = dropdownRoot.querySelector('[data-dropdown-toggle]');
+      if (!toggle) return;
+
       toggle.addEventListener('click', function () {
-        var dropdownRoot = toggle.closest('[data-dropdown-root]');
-        if (!dropdownRoot) return;
+        if (!isDesktopDropdownMode()) return;
         var openNow = dropdownRoot.classList.contains('is-open');
 
-        closeAllDropdowns(root);
-
         if (!openNow) {
-          dropdownRoot.classList.add('is-open');
-          toggle.setAttribute('aria-expanded', 'true');
+          openDropdown(root, dropdownRoot);
+          return;
         }
+
+        closeDropdown(root, dropdownRoot);
+      });
+
+      dropdownRoot.addEventListener('mouseenter', function () {
+        openDropdown(root, dropdownRoot);
+      });
+
+      dropdownRoot.addEventListener('mouseleave', function () {
+        scheduleDropdownClose(root, dropdownRoot);
+      });
+
+      dropdownRoot.addEventListener('focusin', function () {
+        openDropdown(root, dropdownRoot);
+      });
+
+      dropdownRoot.addEventListener('focusout', function () {
+        window.requestAnimationFrame(function () {
+          if (!isDesktopDropdownMode()) return;
+          var active = document.activeElement;
+          if (active && dropdownRoot.contains(active)) return;
+          closeDropdown(root, dropdownRoot);
+        });
       });
     });
 
@@ -136,6 +221,18 @@
         closeAllDropdowns(root);
       }
     });
+
+    if (typeof DESKTOP_DROPDOWN_MEDIA.addEventListener === 'function') {
+      DESKTOP_DROPDOWN_MEDIA.addEventListener('change', function () {
+        closeHamburger(root);
+        closeAllDropdowns(root);
+      });
+    } else if (typeof DESKTOP_DROPDOWN_MEDIA.addListener === 'function') {
+      DESKTOP_DROPDOWN_MEDIA.addListener(function () {
+        closeHamburger(root);
+        closeAllDropdowns(root);
+      });
+    }
   }
 
   function setupFocusGuard(root) {

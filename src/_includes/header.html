@@ -19,14 +19,37 @@
     </button>
 
     <nav id="mus-nav-menu-hamburger" class="mus-nav__menu" aria-label="Primary" data-nav-menu>
-      {% for item in nav.navigation %}
-      <a href="{{ item.url }}">{{ item.title }}</a>
-      {% if item.children %}
-      {% for child in item.children %}
-      <a href="{{ child.url }}">{{ child.title }}</a>
-      {% endfor %}
-      {% endif %}
-      {% endfor %}
+      <ul class="mus-nav__list">
+        {% for item in nav.navigation %}
+        {% set submenuId = "mus-nav-submenu-" + loop.index0 %}
+        <li class="mus-nav__item{% if item.children %} mus-nav__item--dropdown{% endif %}"{% if item.children %} data-dropdown-root{% endif %}>
+          {% if item.children %}
+          <div class="mus-nav__item-row">
+            <a class="mus-nav__link mus-nav__link--parent" href="{{ item.url }}">{{ item.title }}</a>
+            <button
+              class="mus-nav__dropdown-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="{{ submenuId }}"
+              data-dropdown-toggle
+            >
+              <span class="mus-nav__dropdown-icon" aria-hidden="true">&#9662;</span>
+              <span class="mus-nav__sr-only">Toggle {{ item.title }} submenu</span>
+            </button>
+          </div>
+          <ul id="{{ submenuId }}" class="mus-nav__submenu" data-dropdown-menu>
+            {% for child in item.children %}
+            <li class="mus-nav__submenu-item"{% if child.status %} data-status="{{ child.status }}"{% endif %}>
+              <a href="{{ child.url }}">{{ child.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <a class="mus-nav__link" href="{{ item.url }}">{{ item.title }}</a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
     </nav>
   </div>
 </header>

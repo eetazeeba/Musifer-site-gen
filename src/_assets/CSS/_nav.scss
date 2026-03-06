@@ -2,7 +2,6 @@ $bp-tablet: 768px;
 $bp-nav-desktop: 992px;
 $bp-wide: 1200px;
 
-/* Phase 1 foundation for header/nav refresh. */
 .mus-nav {
   background: var(--dark-amethyst);
   color: var(--muted);
@@ -21,7 +20,8 @@ $bp-wide: 1200px;
 }
 
 .mus-nav.is-hidden:focus-within,
-.mus-nav.is-hidden.is-open {
+.mus-nav.is-hidden.is-open,
+.mus-nav.is-hidden.has-dropdown-open {
   transform: translateY(0);
 }
 
@@ -79,7 +79,6 @@ $bp-wide: 1200px;
   border: 0;
 }
 
-/* Hamburger variant */
 .mus-nav__toggle {
   width: 44px;
   height: 44px;
@@ -102,33 +101,13 @@ $bp-wide: 1200px;
   background: var(--soft-apricot);
 }
 
+/* Mobile/tablet nav defaults. */
 .mus-nav__menu {
   display: none;
-  flex-direction: column;
-  gap: 0.25rem;
   width: 100%;
   margin-top: 0.8rem;
   padding-top: 0.8rem;
   border-top: 1px solid rgba(216, 212, 213, 0.35);
-}
-
-.mus-nav__menu a {
-  color: var(--soft-apricot);
-  text-decoration: none;
-  padding: 0.5rem 0;
-}
-
-.mus-nav--hamburger .mus-nav__inner {
-  flex-wrap: wrap;
-}
-
-.mus-nav--hamburger.is-open .mus-nav__menu {
-  display: flex;
-}
-
-/* Desktop dropdown variant (behavior wiring in later phase). */
-.mus-nav__desktop {
-  margin-left: auto;
 }
 
 .mus-nav__list,
@@ -140,70 +119,79 @@ $bp-wide: 1200px;
 
 .mus-nav__list {
   display: flex;
-  align-items: center;
-  gap: 0.2rem;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.mus-nav__list > li > a,
-.mus-nav__dropdown-toggle {
-  display: inline-flex;
+.mus-nav__item-row {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+
+.mus-nav__link,
+.mus-nav__submenu a {
   color: var(--soft-apricot);
   text-decoration: none;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  padding: 0.45rem 0.7rem;
-  border-radius: 8px;
 }
 
-.mus-nav__list > li > a:hover,
-.mus-nav__list > li > a:focus-visible,
+.mus-nav__link {
+  display: block;
+  padding: 0.5rem 0;
+}
+
+.mus-nav__link:hover,
+.mus-nav__link:focus-visible,
+.mus-nav__submenu a:hover,
+.mus-nav__submenu a:focus-visible,
 .mus-nav__dropdown-toggle:hover,
 .mus-nav__dropdown-toggle:focus-visible {
   background: rgba(216, 212, 213, 0.14);
 }
 
-.mus-nav__item--dropdown {
-  position: relative;
-}
-
+/* Keep child links visible in hamburger mode to preserve current mobile behavior. */
 .mus-nav__submenu {
-  position: absolute;
-  top: calc(100% + 0.35rem);
-  left: 0;
-  min-width: 220px;
-  background: #2b1549;
-  border: 1px solid rgba(216, 212, 213, 0.22);
-  border-radius: 12px;
-  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.28);
-  padding: 0.35rem;
-  display: none;
+  position: static;
+  min-width: 0;
+  display: block;
+  margin: 0.15rem 0 0.35rem;
+  padding-left: 0.85rem;
 }
 
 .mus-nav__submenu a {
   display: block;
-  color: var(--soft-apricot);
-  text-decoration: none;
-  padding: 0.45rem 0.55rem;
+  padding: 0.4rem 0.45rem;
   border-radius: 8px;
 }
 
-.mus-nav__submenu a:hover,
-.mus-nav__submenu a:focus-visible {
-  background: rgba(216, 212, 213, 0.14);
+.mus-nav__dropdown-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--soft-apricot);
+  border-radius: 8px;
+  padding: 0.35rem 0.45rem;
 }
 
-.mus-nav__item--dropdown:hover .mus-nav__submenu,
-.mus-nav__item--dropdown:focus-within .mus-nav__submenu,
-.mus-nav__item--dropdown.is-open .mus-nav__submenu {
+.mus-nav__dropdown-icon {
+  display: inline-block;
+  line-height: 1;
+  font-size: 0.86rem;
+}
+
+.mus-nav--hamburger .mus-nav__inner {
+  flex-wrap: wrap;
+}
+
+.mus-nav--hamburger.is-open .mus-nav__menu {
   display: block;
 }
 
-/* Keep keyboard focus visible for all interactive nav controls. */
+/* Keep keyboard focus visible for nav controls. */
 .mus-nav__toggle:focus-visible,
-.mus-nav__menu a:focus-visible,
-.mus-nav__list > li > a:focus-visible,
+.mus-nav__link:focus-visible,
 .mus-nav__dropdown-toggle:focus-visible,
 .mus-nav__submenu a:focus-visible {
   outline: 2px solid var(--soft-apricot);
@@ -216,11 +204,68 @@ $bp-wide: 1200px;
   }
 }
 
-/* Phase 3 dropdown behavior activates later; keep breakpoint scaffolding aligned now. */
 @media (min-width: $bp-nav-desktop) {
-  .mus-nav--dropdown .mus-nav__desktop {
-    margin-top: 0;
+  .mus-nav__toggle {
+    display: none;
+  }
+
+  .mus-nav__menu {
+    display: block;
     width: auto;
+    margin-top: 0;
+    margin-left: auto;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .mus-nav__list {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .mus-nav__item {
+    position: relative;
+  }
+
+  .mus-nav__item-row {
+    justify-content: flex-start;
+    gap: 0.18rem;
+  }
+
+  .mus-nav__link {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .mus-nav__dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .mus-nav__submenu {
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    left: 0;
+    min-width: 220px;
+    background: #2b1549;
+    border: 1px solid rgba(216, 212, 213, 0.22);
+    border-radius: 12px;
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.28);
+    padding: 0.35rem;
+    margin: 0;
+    display: none;
+    z-index: 20;
+  }
+
+  .mus-nav__submenu a {
+    padding: 0.45rem 0.55rem;
+  }
+
+  .mus-nav__item--dropdown.is-open > .mus-nav__submenu {
+    display: block;
   }
 }
 
@@ -236,8 +281,7 @@ $bp-wide: 1200px;
   }
 
   .mus-nav__toggle,
-  .mus-nav__menu a,
-  .mus-nav__list > li > a,
+  .mus-nav__link,
   .mus-nav__dropdown-toggle,
   .mus-nav__submenu a {
     transition: background-color 160ms ease, color 160ms ease;
@@ -247,8 +291,7 @@ $bp-wide: 1200px;
 @media (prefers-reduced-motion: reduce) {
   .mus-nav,
   .mus-nav__toggle,
-  .mus-nav__menu a,
-  .mus-nav__list > li > a,
+  .mus-nav__link,
   .mus-nav__dropdown-toggle,
   .mus-nav__submenu a {
     transition: none;
