@@ -1,7 +1,7 @@
 # Responsive Layout and Navigation Refresh Plan
 
 Purpose
-- Define an implementation-ready plan for the next UI refresh on `jamstack-builder`.
+- Define an implementation-ready plan for the next UI refresh on `main`.
 - Focus on responsive navigation behavior, breakpoint strategy, and reusable content layout patterns.
 
 Current baseline (as of 2026-03-05)
@@ -9,7 +9,7 @@ Current baseline (as of 2026-03-05)
 - Navigation behavior is in `src/_assets/scripts/header-nav.js`.
 - Navigation styling is in `src/_assets/CSS/header-nav.css`.
 - Current header is sticky (`.mus-nav--sticky`) with hamburger behavior and partial dropdown styles.
-- In hamburger mode, parent items with children currently expose child links immediately; this should move to accordion expand/collapse behavior.
+- In hamburger mode, parent items expose child links with accordion expand/collapse behavior.
 
 Implementation status (as of 2026-03-06)
 - Phase 1 (foundation): complete.
