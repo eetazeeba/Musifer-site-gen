@@ -1,3 +1,7 @@
+$bp-tablet: 768px;
+$bp-nav-desktop: 992px;
+$bp-wide: 1200px;
+
 /* Phase 1 foundation for header/nav refresh. */
 .mus-nav {
   background: var(--dark-amethyst);
@@ -206,27 +210,31 @@
   outline-offset: 2px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: $bp-tablet) {
   .mus-nav__inner {
     max-width: 1024px;
   }
 }
+
 /* Phase 3 dropdown behavior activates later; keep breakpoint scaffolding aligned now. */
-@media (min-width: 992px) {
+@media (min-width: $bp-nav-desktop) {
   .mus-nav--dropdown .mus-nav__desktop {
     margin-top: 0;
     width: auto;
   }
 }
-@media (min-width: 1200px) {
+
+@media (min-width: $bp-wide) {
   .mus-nav__inner {
     max-width: 1120px;
   }
 }
+
 @media (prefers-reduced-motion: no-preference) {
   .mus-nav {
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
+
   .mus-nav__toggle,
   .mus-nav__menu a,
   .mus-nav__list > li > a,
@@ -235,6 +243,7 @@
     transition: background-color 160ms ease, color 160ms ease;
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .mus-nav,
   .mus-nav__toggle,

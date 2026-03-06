@@ -6,13 +6,15 @@
   "scripts": {
     "start": "eleventy --serve --input=src --output=_site --watch",
     "build": "eleventy --input=src --output=_site",
+    "build:css": "sass src/_assets/CSS/styles.scss src/_assets/CSS/styles.css --no-source-map && sass src/_assets/CSS/header-nav.scss src/_assets/CSS/header-nav.css --no-source-map",
+    "watch:css": "sass --watch src/_assets/CSS/styles.scss:src/_assets/CSS/styles.css src/_assets/CSS/header-nav.scss:src/_assets/CSS/header-nav.css",
     "cms:validate": "node scripts/cms/validate-content.js",
     "cms:index": "node scripts/cms/build-index.js",
     "cms:check": "npm run cms:validate && npm run cms:index",
     "cms:local": "npx decap-server"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.0",
+    "@11ty/eleventy": "^3.1.2",
     "sass": "^1.80.0"
   }
 }

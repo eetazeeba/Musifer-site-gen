@@ -14,6 +14,7 @@ Scope reviewed
 - Current nav CSS is structurally hamburger-first, while Phase 3 requires width-gated desktop/large-tablet horizontal dropdown behavior at `>= 992px`.
 - Dropdown visibility is currently driven by hover/focus selectors globally, which can conflict with upcoming JS state management (`aria-expanded`, single-open behavior, width gating).
 - Existing breakpoint strategy (`max-width: 720px`) does not align with planned operational breakpoints (`768`, `992`, `1200`) and mobile-first direction.
+- SCSS source-of-edit coverage is incomplete for nav: active nav CSS was file-edited without a paired SCSS entrypoint, increasing drift risk during Phase 1+.
 
 ## Phase 1: Foundation (highest priority)
 
@@ -55,6 +56,15 @@ Scope reviewed
   - Raises maintenance cost in early refactor phases.
 - Severity: medium
 - Recommended action: isolate
+
+### 5) SCSS and active CSS parity gap in nav pipeline
+- File path: `src/_assets/CSS/header-nav.css`
+- Selector/rule: nav stylesheet is active CSS output, but no dedicated SCSS nav entrypoint was established
+- Why it conflicts:
+  - Phase 1 calls for SCSS as source-of-edit baseline.
+  - Without a nav SCSS source, Phase 1-3 changes can diverge between authored and shipped styles.
+- Severity: high
+- Recommended action: refactor
 
 ## Phase 2: Header scroll behavior
 
