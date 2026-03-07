@@ -282,50 +282,18 @@ Phase 3 follow-up: Compact tray geometry + toggle icon refactor (completed)
   - no Phase 4 content-module work in this pass
 
 Phase 4: Content modules (pending; not started)
-- Goals
-  - Introduce reusable content-module primitives for responsive layout composition.
-  - Standardize module behavior across narrow, medium, and wide breakpoints without changing CMS rendering contracts.
-- Likely CSS/SCSS scope
-  - Primary scope: `src/_assets/CSS/_layout.scss`, `src/_assets/CSS/_components.scss`.
-  - Support scope: utility partial patterns in existing SCSS organization (`_tokens.scss`/`_base.scss` only as needed for shared variables and spacing rhythm).
-  - Keep `header`/nav styles out of scope except for overlap bug fixes discovered during module QA.
-- Utility/component boundaries
-  - Responsive grid utilities:
-    - column-count and span helpers for 1/2/3-column module layouts
-    - consistent gutter and max-width behavior by breakpoint
-  - Card rail + scroll-snap components:
-    - horizontal rail container variant
-    - snap-enabled card child variant
-    - optional non-snap rail fallback class
-  - Stacked-card defaults:
-    - narrow-screen single-column card stack defaults
-    - variant modifiers for density (`compact`, `comfortable`) and emphasis (`featured`)
-- Breakpoint expectations
-  - `<= 767px`: stacked defaults, touch-first spacing, single-column card flow.
-  - `768-991px`: optional two-column module layouts where readability remains strong.
-  - `992-1199px`: expand rails/grid density with controlled card widths.
-  - `1200px+`: enable widest module variants and denser card rails.
-- Risks and watchpoints
-  - Overflow and clipping issues in horizontal rails within constrained containers.
-  - Scroll-snap usability on mixed input devices (touch, trackpad, mouse wheel).
-  - Focus visibility and keyboard traversal order across rail/card controls.
-  - Cascade conflicts with existing legacy layout styles in `_layout.scss`.
-- Suggested implementation sequence
-  1. Define utility primitives (grid columns, spacing/gutter helpers).
-  2. Add base rail + scroll-snap component classes.
-  3. Add stacked-card defaults and variant modifiers.
-  4. Integrate on a minimal set of pilot modules.
-  5. Run breakpoint/accessibility QA and adjust utility boundaries.
-- Acceptance criteria
-  - Content modules can be composed via reusable classes without one-off CSS per page.
-  - Grid, rail, and stacked variants behave predictably across all target breakpoints.
-  - Scroll-snap variants remain usable and accessible with keyboard and touch inputs.
-  - No regressions in header/nav behavior while Phase 4 module styles are introduced.
-- Phase 4 out-of-scope
-  - CMS schema/model changes
-  - template architecture rewrite or page-builder abstraction layer
-  - cross-site design-system migration beyond this repository’s current CSS architecture
-
+- Detailed planning artifact:
+  - `docs/responsive-layout-phase-4-content-modules-implementation-brief.md`
+- Phase 4 intent
+  - Define reusable structural/content-module primitives and shared module vocabulary.
+  - Keep implementation mobile-first across `0-767`, `768-991`, `992-1199`, and `1200+` ranges.
+  - Preserve CMS rendering contracts and existing nav/header behavior.
+- Phase 4 scope anchors
+  - Primary CSS/SCSS scope: `src/_assets/CSS/_layout.scss`, `src/_assets/CSS/_components.scss`.
+  - Secondary scope only if needed: `_tokens.scss`, `_base.scss`.
+- Explicit deferment
+  - Parent-level route layout expansion (`/about`, `/services`, `/blog`, `/contact`, and related hubs) is deferred to a later refresh.
+  - Phase 4 defines the reusable system only; broader page-level adoption comes after this phase.
 Phase 5: QA and hardening
 - Keyboard-only navigation checks (Tab, Shift+Tab, Escape).
 - Touch + mouse parity checks for dropdown behavior.
