@@ -11,11 +11,11 @@ Current baseline (as of 2026-03-05)
 - Current header is sticky (`.mus-nav--sticky`) with hamburger behavior and partial dropdown styles.
 - In hamburger mode, parent items expose child links with accordion expand/collapse behavior.
 
-Implementation status (as of 2026-03-06)
+Implementation status (as of 2026-03-07)
 - Phase 1 (foundation): complete.
 - Phase 2 (header scroll behavior): complete.
 - Phase 3 (desktop dropdown + compact disclosures + refinements): complete.
-- Phase 4 (content modules): pending, not started.
+- Phase 4 (content modules): complete baseline implementation + final QA/documentation pass complete.
 
 Phase 3 completion summary (as of 2026-03-06)
 - Delivered baseline desktop dropdown and compact disclosure behavior parity.
@@ -29,7 +29,21 @@ Phase 3 completion summary (as of 2026-03-06)
 - Explicitly deferred:
   - nav architecture rewrite
   - CMS rendering/model overhaul
-  - any Phase 4 implementation work
+  - parent-level route composition redesign beyond the Phase 4 primitive/module system
+
+Phase 4 completion summary (as of 2026-03-07)
+- Delivered structural layout primitives: `.l-page-shell`, `.l-section-shell`, `.l-module-stack`.
+- Delivered responsive grid wrappers: `.l-grid`, `.l-grid--2`, `.l-grid--3` with `768/992/1200` breakpoint behavior.
+- Delivered reusable rail module + snap enhancement: `.module-rail`, `.module-rail--snap`.
+- Delivered stacked-card baseline + additive modifiers aligned to `.card` / `.card-impact`:
+  - `.module-card-stack`
+  - density: `.card--compact`, `.card--comfortable`, `.module-card-stack.is-compact`, `.module-card-stack.is-comfortable`
+  - emphasis: `.card--featured`, `.card--standard`
+- Final implementation-state documentation and usage guidance:
+  - `docs/responsive-layout-phase-4-content-modules-implementation-brief.md`
+- Explicitly deferred:
+  - broad parent-page redesign/composition rollout (`/about`, `/services`, `/blog`, `/contact`, related hubs)
+  - additional module families outside the implemented Phase 4 set
 
 ## 1) Header interaction refresh: hide on scroll down, reveal on scroll up
 
@@ -281,19 +295,18 @@ Phase 3 follow-up: Compact tray geometry + toggle icon refactor (completed)
   - no semantic navigation structure rewrite in `header.html`
   - no Phase 4 content-module work in this pass
 
-Phase 4: Content modules (pending; not started)
-- Detailed planning artifact:
+Phase 4: Content modules (implemented baseline; complete)
+- Final implementation-state artifact:
   - `docs/responsive-layout-phase-4-content-modules-implementation-brief.md`
-- Phase 4 intent
-  - Define reusable structural/content-module primitives and shared module vocabulary.
-  - Keep implementation mobile-first across `0-767`, `768-991`, `992-1199`, and `1200+` ranges.
-  - Preserve CMS rendering contracts and existing nav/header behavior.
-- Phase 4 scope anchors
-  - Primary CSS/SCSS scope: `src/_assets/CSS/_layout.scss`, `src/_assets/CSS/_components.scss`.
-  - Secondary scope only if needed: `_tokens.scss`, `_base.scss`.
-- Explicit deferment
-  - Parent-level route layout expansion (`/about`, `/services`, `/blog`, `/contact`, and related hubs) is deferred to a later refresh.
-  - Phase 4 defines the reusable system only; broader page-level adoption comes after this phase.
+- Implemented Phase 4 scope anchors
+  - `src/_assets/CSS/_layout.scss`: shell, stack, and responsive 1/2/3-column grid primitives.
+  - `src/_assets/CSS/_components.scss`: rail/snap module, stacked-card wrapper, density/emphasis card modifiers.
+- Phase 4 QA/documentation outcomes
+  - Verified overflow behavior, breakpoint consistency, and baseline rail/card accessibility constraints.
+  - Documented final class vocabulary and usage examples for future page adoption work.
+- Explicit deferment remains
+  - Parent-level route layout expansion (`/about`, `/services`, `/blog`, `/contact`, and related hubs) remains deferred to a later refresh.
+  - Phase 4 defines and validates the reusable system; broader page-level adoption follows later.
 Phase 5: QA and hardening
 - Keyboard-only navigation checks (Tab, Shift+Tab, Escape).
 - Touch + mouse parity checks for dropdown behavior.

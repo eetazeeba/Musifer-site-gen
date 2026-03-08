@@ -55,6 +55,8 @@
 }
 
 main {
+  width: 100%;
+  min-width: 0;
   max-width: 900px;
   margin: 2rem auto;
   padding: 0 1rem;
@@ -67,4 +69,87 @@ footer {
   color: var(--muted);
   font-size: 0.9rem;
   margin-top: auto;
+}
+
+/* Phase 4 step 1 primitives: reusable shell and stack wrappers. */
+.l-page-shell,
+.l-section-shell {
+  width: 100%;
+  max-width: 900px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.l-module-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Keep stack rhythm controlled by the wrapper, not child default margins. */
+.l-module-stack > * {
+  margin-block: 0;
+  /* Prevent wide child content (for example rails) from forcing page-level overflow. */
+  min-width: 0;
+}
+
+/* First-pass responsive grid primitives for module composition. */
+.l-grid,
+.l-grid--2,
+.l-grid--3 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+/* Prevent long content from forcing grid tracks wider than the container. */
+.l-grid > *,
+.l-grid--2 > *,
+.l-grid--3 > * {
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .l-page-shell,
+  .l-section-shell {
+    padding-inline: 1.25rem;
+  }
+
+  .l-module-stack {
+    gap: 1.5rem;
+  }
+
+  .l-grid,
+  .l-grid--2,
+  .l-grid--3 {
+    gap: 1.25rem;
+  }
+
+  .l-grid--2,
+  .l-grid--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .l-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .l-page-shell,
+  .l-section-shell {
+    padding-inline: 1.5rem;
+  }
+
+  .l-module-stack {
+    gap: 1.75rem;
+  }
+
+  .l-grid,
+  .l-grid--2,
+  .l-grid--3 {
+    gap: 1.5rem;
+  }
 }

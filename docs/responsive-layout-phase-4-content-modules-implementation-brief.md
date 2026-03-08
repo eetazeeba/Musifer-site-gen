@@ -2,327 +2,181 @@
 
 Status
 - Parent roadmap: `docs/responsive-layout-navigation-refresh-plan.md` (Phase 4)
-- Brief status: planning artifact, implementation-ready
+- Brief status: implementation state documentation
 - Last updated: 2026-03-07
-- Implementation state: not started (planning only)
+- Implementation state: complete baseline for Phase 4 system primitives/modules
 
-## 1) Scope and intent
+## 1) Scope and outcome
 
-Problem this phase solves
-- Navigation and breakpoint behavior are now stabilized from Phases 1-3, but reusable layout/module structure is still ad hoc.
-- Current templates are mostly single-card scaffolds, with no shared system for predictable 1/2/3-column composition, rails, or stacked density variants.
-- Without a Phase 4 structure pass, later page work would drift into one-off CSS and inconsistent responsive behavior.
+What Phase 4 delivered
+- Established reusable, mobile-first layout/module primitives for shells, stacks, grids, rails, and card modifiers.
+- Standardized a shared class vocabulary so future parent-page work can compose existing patterns instead of inventing route-specific CSS.
+- Preserved CMS rendering contracts and existing navigation behavior.
 
-Why this exists now
-- This phase follows the navigation refresh so module work can target stable breakpoints (`0-767`, `768-991`, `992-1199`, `1200+`) without moving nav contracts.
-- It creates a reusable structural vocabulary before any larger page-level refresh.
+What Phase 4 did not deliver
+- Parent-page redesign and broad route-level composition rollout (`/about`, `/services`, `/blog`, `/contact`, etc.).
+- New CMS models/render contracts, JS carousel controls, or navigation rewrites.
 
-What this phase is
-- A structural/content-module system pass.
-- A reusable primitive and module definition pass for SCSS partials.
+## 2) Final class vocabulary (implemented)
 
-What this phase is not
-- Not a parent-page redesign (`/about`, `/services`, `/blog`, `/contact`, etc.).
-- Not a nav/header rewrite.
-- Not a CMS model/rendering contract change.
-- Not analytics, media-hosting, or build-system expansion work.
-- Not implementation of the next larger visual/IA refresh.
+### Layout primitives (`_layout.scss`)
+- `.l-page-shell`: page-level max-width + responsive inline gutters.
+- `.l-section-shell`: section-level max-width + responsive inline gutters.
+- `.l-module-stack`: vertical module rhythm wrapper.
+- `.l-grid`: base 1-column grid wrapper.
+- `.l-grid--2`: 1-column default, upgrades to 2 columns at `>=768px`.
+- `.l-grid--3`: 1-column default, upgrades to 2 columns at `>=768px`, 3 columns at `>=992px`.
 
-## 2) File ownership and boundaries
+### Module/container classes (`_components.scss`)
+- `.module-rail`: horizontal overflow rail with card-width clamps and gap rhythm.
+- `.module-rail--snap`: additive scroll-snap modifier for `.module-rail`.
+- `.module-card-stack`: stacked-card container wrapper for controlled vertical card rhythm.
 
-Primary scope
-- `src/_assets/CSS/_layout.scss`
-  - Owns layout primitives and wrappers:
-  - page/section shells
-  - module stacks
-  - responsive grids
-  - split-layout primitives
-  - rail container geometry and overflow behavior
-- `src/_assets/CSS/_components.scss`
-  - Owns reusable module/component patterns:
-  - card rails and scroll-snap variants
-  - stacked-card defaults
-  - card density/emphasis modifiers
+### Card foundations and additive modifiers (`_components.scss`)
+- `.card`: standard card foundation.
+- `.card-impact`: high-emphasis card foundation.
+- `.card--compact`: per-card density modifier (reduced padding/rhythm).
+- `.card--comfortable`: per-card density modifier (increased padding/rhythm).
+- `.card--featured`: per-card emphasis modifier (border/shadow/marker + stronger title scale).
+- `.card--standard`: explicit reset to baseline emphasis.
+- `.module-card-stack.is-compact`: stack-level compact rhythm modifier.
+- `.module-card-stack.is-comfortable`: stack-level comfortable rhythm modifier.
 
-Secondary/shared scope (only if required)
-- `src/_assets/CSS/_tokens.scss`
-  - Add shared spacing/gutter/card-width custom properties only when module behavior cannot stay coherent with current tokens.
-- `src/_assets/CSS/_base.scss`
-  - Minimal baseline rules only when required for broad module consistency (for example, global overflow/focus edge fixes).
+Naming notes and deviations from early planning
+- `module-*` naming was retained for rail and stack containers.
+- Card density/emphasis landed as additive `card--*` modifiers plus optional stack state hooks (`is-compact`, `is-comfortable`) to minimize markup churn.
+- Legacy `.grid` remains available for compatibility, but new Phase 4 work should prefer `l-grid*` wrappers.
 
-Out of scope in this phase
-- `src/_assets/CSS/_nav.scss`
-- `src/_assets/CSS/header-nav.scss`
-- `src/_assets/CSS/header-nav.css`
-- `src/_assets/scripts/header-nav.js`
-- `src/_includes/header.html`
+## 3) Responsibility boundaries
 
-Exception rule
-- Nav/header files remain out of scope except narrowly scoped overlap bug fixes found during future Phase 4 QA.
+`src/_assets/CSS/_layout.scss`
+- Owns structural geometry and responsive composition primitives:
+  - shells/gutters/max-width behavior
+  - stack rhythm wrappers
+  - 1/2/3-column grid behavior by breakpoint
+  - overflow-safety basics for structural children (`min-width: 0` safeguards)
 
-## 3) Proposed structural taxonomy and naming direction
+`src/_assets/CSS/_components.scss`
+- Owns reusable module behavior and card presentation patterns:
+  - rail overflow/snap behavior
+  - stacked-card wrapper behavior
+  - card density/emphasis modifiers layered onto `.card`/`.card-impact`
 
-Naming direction (recommended first pass)
-- Layout primitives: `l-*` (or `layout-*`)
-- Reusable module containers: `module-*` (or `m-*`)
-- Card-level variants: existing `.card`/`.card-impact` plus additive modifiers
-- State/modifier hooks: `is-*` or `--modifier` suffixes
+`.card` / `.card-impact` alignment
+- `.card` and `.card-impact` remain the primary card foundations.
+- Phase 4 modifiers are additive; they do not fork separate card families.
 
-Responsibility ladder
-1. Shell primitives define width, gutters, and section rhythm.
-2. Module wrappers define child arrangement (stack, grid, split, rail).
-3. Card variants define per-item emphasis and density.
-4. Page-specific compositions are deferred and should compose 1-3, not bypass them.
+Explicitly deferred
+- Parent-level route composition redesign is deferred to later refresh work.
+- Future page adoption should compose this vocabulary instead of introducing one-off layout systems.
 
-Structural primitives to define
-- Page shell and section shell wrappers
-  - Keep content aligned with shared max-width and responsive inline gutters.
-- Module stack wrappers
-  - Vertical rhythm container for mixed modules on a route.
-- Responsive grid wrappers
-  - 1-column default with 2/3-column activation by breakpoint/modifier.
-- Split-layout primitives
-  - Two-region layout for text/media or primary/supporting content at medium+ widths.
-- Rail containers
-  - Horizontal overflow track with predictable card widths and gutter alignment.
-- Snap-enabled rail variants
-  - Rail modifier that adds CSS scroll-snap behavior without changing markup contracts.
-- Stacked-card defaults
-  - Mobile-first single-column card flow with standardized spacing and optional density/emphasis modifiers.
+## 4) Usage guidance (implementation-ready examples)
 
-## 4) Utility vs component rules
+### Shell + stack composition
+```html
+<div class="l-page-shell l-module-stack">
+  <section class="card">...</section>
+  <section class="card-impact">...</section>
+</div>
+```
 
-Low-level layout utilities (layout-only; no card visuals)
-- Belongs here:
-  - column templates (`1`, `2`, `3` columns)
-  - gaps/gutters
-  - max-width/container behavior
-  - split proportions
-- Does not belong here:
-  - card colors, shadows, button styling
-  - route-specific spacing exceptions
+### Grid wrappers
+```html
+<section class="l-grid--2">
+  <article class="card">...</article>
+  <article class="card">...</article>
+</section>
 
-Reusable structural components (module containers)
-- Belongs here:
-  - grid module wrappers
-  - rail wrappers
-  - snap rail behavior
-  - stacked module wrappers
-- Does not belong here:
-  - page-specific hero/landing assembly
-  - custom rules tied to a single route slug
+<section class="l-grid--3">
+  <article class="card">...</article>
+  <article class="card">...</article>
+  <article class="card">...</article>
+</section>
+```
 
-Card-level component variants
-- Belongs here:
-  - featured vs standard card emphasis
-  - compact vs comfortable density
-  - card-in-rail width caps and spacing variants
-- Does not belong here:
-  - module container overflow logic
-  - layout shell geometry
+### Rail + snap usage
+```html
+<div class="module-rail module-rail--snap" aria-label="Browse items">
+  <article class="card">...</article>
+  <article class="card">...</article>
+  <article class="card">...</article>
+</div>
+```
 
-Future page-specific compositions (deferred)
-- Examples to defer:
-  - custom `/about` landing layout assembly
-  - route-specific hero/banner choreography
-  - one-off rail behavior unique to a parent route
+### Stacked-card defaults + density/emphasis
+```html
+<div class="module-card-stack is-comfortable">
+  <article class="card card--featured">...</article>
+  <article class="card card--standard">...</article>
+  <article class="card-impact card--compact">...</article>
+</div>
+```
 
-## 5) Breakpoint behavior guidance
-
-Breakpoint ladder (aligned to refresh plan)
-- Narrow: `0-767px`
-- Medium: `768-991px`
-- Wide: `992-1199px`
-- Extra-wide: `1200px+`
-
-Narrow defaults (`0-767px`)
-- Default all modules to single-column stack.
-- Rails remain touch-first horizontal overflow with clear card boundaries.
-- Use comfortable tap targets and larger vertical rhythm.
-- Keep inline gutters simple and stable so snap alignment remains predictable.
-
-Medium behavior (`768-991px`)
-- Enable optional 2-column grid and split layouts when content readability holds.
-- Increase module gap and section rhythm from narrow baseline.
-- Rails can widen visible card width while preserving horizontal scroll ergonomics.
-
-Wide behavior (`992-1199px`)
-- Activate denser grid variants including optional 3-column patterns where card content supports it.
-- Tighten vertical rhythm slightly versus narrow to improve scan density.
-- Rails should show more cards per viewport without clipping interactive controls.
-
-Extra-wide behavior (`1200px+`)
-- Enable widest container and densest rail/grid variants within readability guardrails.
-- Increase maximum rail viewport utilization while preserving gutter alignment.
-- Keep line lengths and card text measure constrained to avoid readability regressions.
-
-Spacing, gutters, and density expectations
-- Mobile-first defaults in base module classes.
-- `min-width` queries progressively increase column count and adjust gaps.
-- Density modifiers should alter spacing scale, not break module semantics.
-- Any new spacing tokens should be shared via `_tokens.scss`; do not hardcode route-specific values.
-
-## 6) Module family planning guidance
-
-### 6.1 Responsive grid modules
-Intended use
-- Reusable card/text module groups requiring responsive 1/2/3-column composition.
-
-Layout behavior
-- 1-column default.
-- Optional 2-column activation at `>=768px`.
-- Optional 3-column activation at `>=992px` or `>=1200px` based on card density needs.
-
-Likely markup assumptions
-- Module wrapper around repeatable child items (`article`, `section`, or card blocks).
-- Child items should not require route-specific wrapper nesting to participate.
-
-Interaction expectations
-- No JS dependency.
-
-Accessibility/usability guardrails
+Implementation notes
 - Keep DOM order equal to reading order.
-- Avoid visual reordering that conflicts with keyboard/screen-reader flow.
+- Use density/emphasis as additive visual rhythm/priority controls, not semantic substitutes.
+- Prefer CSS-first rail behavior; do not introduce JS controls unless required by later scope.
 
-### 6.2 Card rail modules
-Intended use
-- High-density lists where vertical space is constrained and horizontal browse is acceptable.
+## 5) Breakpoint behavior (implemented)
 
-Layout behavior
-- Horizontal overflow container with consistent card min/max width and inter-card gap.
-- Gutters align with page/section shell spacing.
+Narrow (`0-767px`)
+- Shells and grids default to single-column flow.
+- Stacks and cards prioritize readable spacing and touch comfort.
+- Rails remain horizontally scrollable at container level.
 
-Likely markup assumptions
-- One rail container with direct card children or a lightweight inner track wrapper.
+Medium (`768-991px`)
+- `l-grid--2` and `l-grid--3` activate 2-column composition.
+- Gutters and stack/grid gaps increase progressively.
 
-Interaction expectations
-- CSS-first scrolling behavior.
-- JS controls are optional future enhancement, not required in Phase 4.
+Wide (`992-1199px`)
+- `l-grid--3` activates 3-column composition.
+- Rail card clamps continue to prioritize readable card measure.
 
-Accessibility/usability guardrails
-- Preserve keyboard access to all links/buttons within off-screen cards.
-- Ensure focused elements are not clipped by overflow styling.
-- Keep touch-scroll behavior smooth and non-trapping.
+Extra-wide (`1200px+`)
+- Shell inline gutters and stack/grid gaps increase again.
+- 3-column/grid and rail rhythm remain constrained for readability.
 
-### 6.3 Scroll-snap rail variants
-Intended use
-- Touch-first card rails that benefit from deliberate snapping.
+## 6) QA findings summary (final pass)
 
-Layout behavior
-- Rail modifier enabling `scroll-snap-type` on container and `scroll-snap-align` on items.
-- Use `scroll-padding-inline` to align first/last snap positions with shell gutters.
+What was checked
+- Narrow/mobile overflow and readability on representative routes and `/about/`.
+- Breakpoint activation for shell/stack/grid (`375`, `500`, `768`, `992`, `1200`).
+- Rail-local overflow vs page-level overflow.
+- Rail keyboard focus reachability behavior via temporary injected focusables.
+- Rail wheel/trackpad-style horizontal scroll behavior.
+- Card modifier behavior (`compact`, `comfortable`, `featured`, `standard`).
+- DOM order and visual order consistency.
 
-Likely markup assumptions
-- Reuses card rail markup with an additive snap modifier.
+Results
+- No page-level horizontal overflow detected on representative routes (`/`, `/about/`, `/services/`, `/blog/`, `/contact/`) at tested breakpoints.
+- Grid wrappers activate as expected:
+  - `l-grid--2`: 1 column narrow, 2 columns at `>=768px`.
+  - `l-grid--3`: 1 column narrow, 2 columns at `>=768px`, 3 columns at `>=992px`.
+- Rail overflow remains local to `.module-rail`; page containers remain stable.
+- Keyboard focus can scroll rail content into view when focusable controls are present.
+- Horizontal wheel-delta scrolling changes rail position as expected in desktop viewport checks.
+- Density/emphasis modifiers produce distinct, additive visual changes while preserving readable line-height.
+- No corrective code changes were required in this pass.
 
-Interaction expectations
-- Snap behavior should degrade gracefully if unsupported.
-- No mandatory JS for basic snapping.
+Known constraints for future page adoption
+- Current `/about/` rail preview cards are intentionally inert; when real links/buttons are introduced, keep them inside the existing rail/card contract.
+- Avoid adding global overflow clipping (`html/body overflow-x hidden`) as a substitute for container-level width fixes.
 
-Accessibility/usability guardrails
-- Do not create focus traps or forced snap behavior that fights keyboard navigation.
-- Keep wheel/trackpad behavior reasonable on desktop and hybrid devices.
+## 7) Deferred items after Phase 4
 
-### 6.4 Stacked-card modules
-Intended use
-- Default module presentation for narrow screens and content-first sections.
+Still deferred by design
+- Parent-level page composition rollout using these primitives (`about`, `services`, `blog`, `contact`, related hubs).
+- Split-layout helper family and any additional module families not already implemented.
+- JS carousel controls/pagination.
+- Final IA/content strategy work for child-route wiring.
 
-Layout behavior
-- Single-column vertical stack by default.
-- Predictable spacing between cards.
-- Optional transition to grid/rail variants at medium+ breakpoints via wrapper modifiers.
+## 8) Final implementation status
 
-Likely markup assumptions
-- Existing `.card` and `.card-impact` usage can be retained with additive wrapper classes.
+Phase 4 status
+- Effectively complete for reusable structural/module primitives and implementation-state documentation.
 
-Interaction expectations
-- No special interaction required beyond standard links/buttons.
-
-Accessibility/usability guardrails
-- Maintain clear heading hierarchy and readable text measures.
-- Keep tap targets and spacing comfortable on narrow touch devices.
-
-### 6.5 Density modifiers (`compact`, `comfortable`)
-Intended use
-- Adjust card/module density by context without redefining core layout primitives.
-
-Layout behavior
-- `compact`: reduced gaps/padding for high-density contexts.
-- `comfortable`: increased spacing for readability-first contexts.
-
-Likely markup assumptions
-- Applied as additive module/card modifiers, not alternate component forks.
-
-Interaction expectations
-- No behavior changes; visual spacing only.
-
-Accessibility/usability guardrails
-- Compact mode must still preserve minimum target sizes and readable line-height.
-
-### 6.6 Emphasis modifiers (`featured`, `standard`)
-Intended use
-- Distinguish priority content while keeping module structure reusable.
-
-Layout behavior
-- `featured`: stronger visual weight, potentially larger span in grid contexts.
-- `standard`: default card rhythm.
-
-Likely markup assumptions
-- Builds on existing `.card` and `.card-impact` patterns where practical.
-
-Interaction expectations
-- No separate interaction model.
-
-Accessibility/usability guardrails
-- Emphasis must not rely on color alone; preserve semantic headings and clear contrast.
-
-## 7) Constraints and guardrails
-
-Required constraints for implementation
-- Preserve current CMS rendering contracts in this phase.
-- Minimize markup churn; prefer additive classes/wrappers over template rewrites.
-- Keep modules mobile-first.
-- Keep horizontal overflow patterns touch-friendly.
-- Prefer CSS-first rail/snap behavior before introducing JS.
-- Keep nav/header behavior unchanged unless fixing direct overlap regressions.
-- Avoid introducing route-specific one-off layout rules as a substitute for primitives.
-
-## 8) Recommended future implementation sequence
-
-1. Structural wrappers first
-- Define page/section shell + module stack primitives in `_layout.scss`.
-- Confirm no regressions against current templates.
-
-2. Grid primitives second
-- Add responsive 1/2/3-column grid utilities/wrappers.
-- Validate breakpoint/gutter behavior across existing scaffold pages.
-
-3. Card rail and snap variants third
-- Add base rail container and optional snap modifier in `_components.scss`.
-- Validate touch/keyboard/trackpad behavior.
-
-4. Stacked-card defaults and modifiers fourth
-- Formalize stacked defaults and density/emphasis modifiers.
-- Align with existing `.card`/`.card-impact` usage to reduce markup churn.
-
-5. Module QA and documentation pass
-- Verify accessibility, overflow behavior, and breakpoint consistency.
-- Document final class vocabulary and usage examples in Phase 4 docs.
-
-## 9) Adoption/deferment note
-
-Explicit deferment
-- Parent-level route layout expansion for `/about`, `/services`, `/blog`, `/contact`, and related hubs is deferred to a later refresh.
-- Phase 4 defines reusable primitives/modules only.
-- Later parent-page refresh work should consume these primitives instead of inventing one-off layout systems.
-
-## 10) Acceptance criteria for future Phase 4 implementation
-
-- Reusable structural primitives exist for shell, stack, grid, split, and rail composition.
-- Grid primitives support predictable 1/2/3-column behavior across target breakpoints.
-- Rail and snap variants are implemented and documented with intended use and constraints.
-- Stacked-card narrow defaults are implemented with density and emphasis modifiers.
-- Utility/component taxonomy is coherent and avoids overlap or duplicate responsibilities.
-- Existing CMS rendering contracts remain unchanged.
-- Nav/header behavior remains stable (except explicit overlap fixes if needed).
-- Parent-page redesign/composition work remains deferred.
+Definition of done met in this pass
+- Final vocabulary documented.
+- Boundaries between layout and components clarified.
+- Usage examples provided.
+- QA findings recorded with explicit deferments.

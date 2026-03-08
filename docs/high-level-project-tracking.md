@@ -54,3 +54,13 @@ Purpose
   - Phase 2 complete
   - Phase 3 baseline complete with follow-up refinements pending
   - Phase 4 pending
+
+## Playwright validation expansion note (2026-03-07)
+- Automated rail interaction validation was intentionally skipped for tonight after implementation work.
+- Playwright CLI is available, but browser binaries are not yet provisioned in a stable project-level setup.
+- Follow-up expansion plan:
+  - add a project-level Playwright dependency and lock it in `package-lock.json`
+  - add repeatable scripts for browser install and UI smoke checks
+  - add a first smoke spec targeting `/about/` rail behavior (horizontal scroll, snap mode, keyboard focus reachability)
+  - include desktop-wheel/trackpad-style and narrow-touch viewport coverage in the same smoke suite
+  - capture artifacts (screenshots/traces) in a predictable location for regression review

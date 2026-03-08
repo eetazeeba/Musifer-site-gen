@@ -18,10 +18,19 @@
 
 .card,
 .card-impact {
-  padding: 1rem 1.5rem 1.5rem;
+  --card-pad-block-start: 1rem;
+  --card-pad-inline: 1.5rem;
+  --card-pad-block-end: 1.5rem;
+  --card-stack-space: 1.25rem;
+  --card-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --card-border-width: 0;
+  --card-border-color: transparent;
+  position: relative;
+  padding: var(--card-pad-block-start) var(--card-pad-inline) var(--card-pad-block-end);
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-  margin-bottom: 1.25rem;
+  border: var(--card-border-width) solid var(--card-border-color);
+  box-shadow: var(--card-shadow);
+  margin-bottom: var(--card-stack-space);
 }
 
 .card {
@@ -53,6 +62,75 @@
   color: var(--text);
 }
 
+/* Stacked card baseline for single-column module flow. */
+.module-card-stack {
+  --card-stack-gap: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-stack-gap);
+}
+
+.module-card-stack > :where(.card, .card-impact) {
+  margin-bottom: 0;
+}
+
+/* Density modifiers change rhythm only; card semantics stay unchanged. */
+:where(.card, .card-impact).card--compact,
+.module-card-stack.is-compact > :where(.card, .card-impact) {
+  --card-pad-block-start: 0.9rem;
+  --card-pad-inline: 1.1rem;
+  --card-pad-block-end: 1.1rem;
+  --card-stack-space: 0.9rem;
+}
+
+:where(.card, .card-impact).card--comfortable,
+.module-card-stack.is-comfortable > :where(.card, .card-impact) {
+  --card-pad-block-start: 1.15rem;
+  --card-pad-inline: 1.65rem;
+  --card-pad-block-end: 1.7rem;
+  --card-stack-space: 1.5rem;
+}
+
+.module-card-stack.is-compact {
+  --card-stack-gap: 0.9rem;
+}
+
+.module-card-stack.is-comfortable {
+  --card-stack-gap: 1.5rem;
+}
+
+/* Emphasis modifiers add hierarchy cues beyond color alone. */
+:where(.card, .card-impact).card--featured {
+  --card-border-width: 2px;
+  --card-border-color: rgba(30, 10, 56, 0.35);
+  --card-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+:where(.card, .card-impact).card--featured::before {
+  content: "";
+  display: block;
+  width: 2.25rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.7;
+  margin-bottom: 0.6rem;
+}
+
+:where(.card, .card-impact).card--featured .card-title {
+  font-size: clamp(1.3rem, 3vw, 1.65rem);
+}
+
+:where(.card, .card-impact).card--standard {
+  --card-border-width: 0;
+  --card-border-color: transparent;
+  --card-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+:where(.card, .card-impact).card--standard::before {
+  content: none;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -66,6 +144,43 @@
   box-shadow: 0 6px 12px rgba(15, 23, 42, 0.04);
 }
 
+/* Phase 4 step 3: reusable horizontal card rail (CSS-first, mobile-first). */
+.module-rail {
+  --module-rail-gap: 1rem;
+  --module-rail-card-min: 15rem;
+  --module-rail-card-max: 22rem;
+  --module-rail-focus-buffer: 0.5rem;
+  --module-rail-scroll-padding: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(var(--module-rail-card-min), 82vw, var(--module-rail-card-max));
+  gap: var(--module-rail-gap);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-block: 0.2rem 0.45rem;
+}
+
+.module-rail > * {
+  min-width: 0;
+  scroll-margin-inline: var(--module-rail-focus-buffer);
+}
+
+/* Keep keyboard focus targets scrollable into a visible rail region. */
+.module-rail :where(a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])) {
+  scroll-margin-inline: var(--module-rail-focus-buffer);
+}
+
+.module-rail--snap {
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--module-rail-scroll-padding);
+}
+
+.module-rail--snap > * {
+  scroll-snap-align: start;
+}
+
 .video-frame {
   width: min(100%, 900px);
   aspect-ratio: 16 / 9;
@@ -73,4 +188,141 @@
   border: 0;
   border-radius: 12px;
   display: block;
+}
+
+/* About reference page: visual QA target for Phase 4 composition work. */
+.about-page .card,
+.about-page .card-impact {
+  margin-bottom: 0;
+}
+
+.about-kicker,
+.about-order {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card-impact .about-kicker {
+  color: var(--dark-amethyst);
+}
+
+.about-hero__intro {
+  align-items: start;
+}
+
+.about-hero__visual {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.65rem;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px dashed rgba(30, 10, 56, 0.35);
+}
+
+.about-callouts {
+  margin-top: 1rem;
+}
+
+.about-panel {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px dashed rgba(30, 10, 56, 0.25);
+  background: rgba(216, 212, 213, 0.35);
+}
+
+.card-impact .about-panel {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(30, 10, 56, 0.35);
+}
+
+.about-panel .card-title {
+  margin-bottom: 0.35rem;
+  font-size: 1rem;
+}
+
+.about-pillars-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.about-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.about-chip {
+  display: inline-block;
+  width: fit-content;
+  margin: 0;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1px dashed rgba(30, 10, 56, 0.3);
+  background: rgba(216, 212, 213, 0.25);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.about-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-height: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px dashed rgba(30, 10, 56, 0.25);
+  background: rgba(216, 212, 213, 0.25);
+}
+
+.about-preview-card p {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .module-rail {
+    --module-rail-gap: 1.25rem;
+    grid-auto-columns: clamp(16rem, 58vw, 23rem);
+  }
+
+  .module-rail--snap {
+    --module-rail-scroll-padding: 0;
+  }
+
+  .about-section-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  .about-hero__visual {
+    min-height: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .module-rail {
+    grid-auto-columns: clamp(16rem, 42vw, 23rem);
+  }
+}
+
+@media (min-width: 1200px) {
+  .module-rail {
+    --module-rail-gap: 1.5rem;
+    grid-auto-columns: clamp(17rem, 34vw, 24rem);
+  }
 }
