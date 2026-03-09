@@ -40,7 +40,7 @@ Phase 4 completion summary (as of 2026-03-07)
   - density: `.card--compact`, `.card--comfortable`, `.module-card-stack.is-compact`, `.module-card-stack.is-comfortable`
   - emphasis: `.card--featured`, `.card--standard`
 - Final implementation-state documentation and usage guidance:
-  - `docs/responsive-layout-phase-4-content-modules-implementation-brief.md`
+  - `docs/planning/responsive-layout-phase-4-content-modules-implementation-brief.md`
 - Explicitly deferred:
   - broad parent-page redesign/composition rollout (`/about`, `/services`, `/blog`, `/contact`, related hubs)
   - additional module families outside the implemented Phase 4 set
@@ -297,7 +297,7 @@ Phase 3 follow-up: Compact tray geometry + toggle icon refactor (completed)
 
 Phase 4: Content modules (implemented baseline; complete)
 - Final implementation-state artifact:
-  - `docs/responsive-layout-phase-4-content-modules-implementation-brief.md`
+  - `docs/planning/responsive-layout-phase-4-content-modules-implementation-brief.md`
 - Implemented Phase 4 scope anchors
   - `src/_assets/CSS/_layout.scss`: shell, stack, and responsive 1/2/3-column grid primitives.
   - `src/_assets/CSS/_components.scss`: rail/snap module, stacked-card wrapper, density/emphasis card modifiers.

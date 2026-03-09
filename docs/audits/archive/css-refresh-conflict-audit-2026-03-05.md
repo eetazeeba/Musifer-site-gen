@@ -1,7 +1,7 @@
 # CSS Audit: Responsive Layout + Navigation Refresh
 
 Source of truth
-- Planning reference: `docs/responsive-layout-navigation-refresh-plan.md`
+- Planning reference: `docs/planning/responsive-layout-navigation-refresh-plan.md`
 - Prioritization applied from `## 6) Proposed implementation sequence` (Phase 1 -> Phase 3 first, including compact/hamburger accordion behavior).
 
 Scope reviewed

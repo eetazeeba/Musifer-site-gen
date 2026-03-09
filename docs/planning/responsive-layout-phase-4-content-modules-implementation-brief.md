@@ -1,7 +1,7 @@
 # Responsive Layout Phase 4 Content Modules Implementation Brief
 
 Status
-- Parent roadmap: `docs/responsive-layout-navigation-refresh-plan.md` (Phase 4)
+- Parent roadmap: `docs/planning/responsive-layout-navigation-refresh-plan.md` (Phase 4)
 - Brief status: implementation state documentation
 - Last updated: 2026-03-07
 - Implementation state: complete baseline for Phase 4 system primitives/modules

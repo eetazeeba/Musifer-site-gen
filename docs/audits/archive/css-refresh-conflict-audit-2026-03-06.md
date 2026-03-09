@@ -1,7 +1,7 @@
 # CSS Conflict Audit - 2026-03-06
 
 Source of truth
-- Planning reference: `docs/responsive-layout-navigation-refresh-plan.md`
+- Planning reference: `docs/planning/responsive-layout-navigation-refresh-plan.md`
 - This audit supersedes `docs/audits/archive/css-refresh-conflict-audit-2026-03-05.md`.
 - Audit mode: review and documentation only (no implementation changes).
 

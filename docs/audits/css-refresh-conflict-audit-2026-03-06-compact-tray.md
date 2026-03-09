@@ -1,12 +1,12 @@
 # CSS Conflict Audit - 2026-03-06 (Compact Tray Alignment)
 
 Source of truth
-- Planning reference: `docs/responsive-layout-navigation-refresh-plan.md`
+- Planning reference: `docs/planning/responsive-layout-navigation-refresh-plan.md`
 - This audit supersedes `docs/audits/css-refresh-conflict-audit-2026-03-06.md`.
 - Audit mode: review and documentation only (no implementation changes).
 
 Scope reviewed
-- `docs/responsive-layout-navigation-refresh-plan.md`
+- `docs/planning/responsive-layout-navigation-refresh-plan.md`
 - `src/_includes/header.html`
 - `src/_assets/scripts/header-nav.js`
 - `src/_assets/CSS/_nav.scss`

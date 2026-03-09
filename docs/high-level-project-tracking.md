@@ -10,6 +10,27 @@ Purpose
 - Deployment target: GitHub Pages via GitHub Actions
 - Pages workflow: `.github/workflows/deploy-pages.yml`
 
+## Analytics tangent status (Plausible) (2026-03-09)
+- Tracking artifact: `docs/planning/plausible-feasibility-and-implementation-plan.md`.
+- Current `main` status: investigation/evaluation only; no analytics implementation has been merged.
+- Confirmed repo state:
+  - No Plausible script include in shared layout templates.
+  - No analytics helper/config files committed in source.
+- Hosting context relevant to analytics:
+  - In-repo deploy model remains GitHub Pages via Actions.
+  - Netlify project `creative-cassata-f39fb9` is connected for environment visibility, but there is no repo-tracked Netlify deployment/config artifact yet (`netlify.toml`, `_headers`, `_redirects`).
+- Open decisions before implementation:
+  - Canonical production hostname and host strategy (Pages only, Netlify only, or dual with canonical redirect).
+  - Production-only tracking versus preview/branch deploy tracking.
+  - Privacy/disclosure requirements before enabling analytics.
+  - Initial event taxonomy priorities for `/services/`, `/blog/`, and `/contact/`.
+
+## Domain direction note (2026-03-09)
+- Tracking artifact: `docs/planning/domain-direction-musifer-studio-art.md`.
+- Current direction: `musifer.studio` preferred primary; `musifer.art` retained as backup/brand-protection.
+- Current state on `main`: planning direction documented only; no canonical domain cutover/redirect implementation has been applied yet.
+- Follow-up remains: finalize canonical host/domain implementation and publish corresponding hosting/domain documentation updates after rollout.
+
 ## CMS operational notes
 - Decap config path: `src/admin/config.yml`
 - CMS branch target: `main`
@@ -48,12 +69,12 @@ Purpose
 
 ## Near-term implementation focus
 - Navigation/branding follow-up items are tracked in:
-  - `docs/responsive-layout-navigation-refresh-plan.md`
+  - `docs/planning/responsive-layout-navigation-refresh-plan.md`
 - Current status from that plan:
   - Phase 1 complete
   - Phase 2 complete
-  - Phase 3 baseline complete with follow-up refinements pending
-  - Phase 4 pending
+  - Phase 3 complete (including follow-up refinements)
+  - Phase 4 baseline system complete; route-level adoption for `/services/`, `/blog/`, and `/contact/` remains a follow-up
 
 ## Playwright validation expansion note (2026-03-07)
 - Automated rail interaction validation was intentionally skipped for tonight after implementation work.
