@@ -48,5 +48,5 @@
 ## Documentation follow-up after acquisition/connection
 - Update `README.md` hosting/domain section with confirmed canonical domain and active host path.
 - Update `docs/high-level-project-tracking.md` from "direction selected" to "implemented state" with dates.
-- Update `docs/planning/plausible-feasibility-and-implementation-plan.md` to reflect final canonical domain decision for analytics setup.
+- Update `docs/planning/analytics-rollout-plan.md` to reflect final canonical domain decision for analytics setup.
 - Keep this document as the historical decision record; append implementation outcome notes rather than replacing rationale.

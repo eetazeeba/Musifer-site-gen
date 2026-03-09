@@ -10,20 +10,30 @@ Purpose
 - Deployment target: GitHub Pages via GitHub Actions
 - Pages workflow: `.github/workflows/deploy-pages.yml`
 
-## Analytics tangent status (Plausible) (2026-03-09)
-- Tracking artifact: `docs/planning/plausible-feasibility-and-implementation-plan.md`.
-- Current `main` status: investigation/evaluation only; no analytics implementation has been merged.
-- Confirmed repo state:
-  - No Plausible script include in shared layout templates.
-  - No analytics helper/config files committed in source.
-- Hosting context relevant to analytics:
-  - In-repo deploy model remains GitHub Pages via Actions.
-  - Netlify project `creative-cassata-f39fb9` is connected for environment visibility, but there is no repo-tracked Netlify deployment/config artifact yet (`netlify.toml`, `_headers`, `_redirects`).
-- Open decisions before implementation:
-  - Canonical production hostname and host strategy (Pages only, Netlify only, or dual with canonical redirect).
-  - Production-only tracking versus preview/branch deploy tracking.
-  - Privacy/disclosure requirements before enabling analytics.
-  - Initial event taxonomy priorities for `/services/`, `/blog/`, and `/contact/`.
+## Analytics tangent status (Umami-first, vendor-agnostic) (2026-03-09)
+- Tracking artifact: `docs/planning/analytics-rollout-plan.md`.
+- Current `experimental` status: Phase 1 env-gated base insertion is implemented (not yet merged to `main`).
+- Phase 0 decisions locked in planning docs:
+  - Canonical host baseline: GitHub Pages.
+  - Domain direction: `musifer.studio` primary, `musifer.art` backup.
+  - Initial analytics scope: production-only.
+  - Privacy/disclosure planning reference: `docs/planning/privacy-policy-draft.md` (content finalized; path retained).
+  - Netlify `creative-cassata-f39fb9`: connected context only for now, not canonical host baseline.
+- Implemented Phase 1 state on `experimental`:
+  - `.github/workflows/deploy-pages.yml` build job sets:
+    - `ANALYTICS_ENABLED=true`
+    - `ANALYTICS_PROVIDER=umami`
+    - `ANALYTICS_DOMAIN=musifer.studio`
+  - `src/_data/analytics.js` maps env values to:
+    - `analytics.enabled`
+    - `analytics.provider`
+    - `analytics.domain`
+  - `src/_includes/layouts/base.njk` includes analytics only when `analytics.enabled` is `true`.
+  - `/admin` remains unaffected because it does not use the shared public base layout.
+- Remaining follow-up items:
+  - Confirm where/how the finalized privacy policy will be published and linked in the live site.
+  - Confirm long-term production hostname/cutover details for `ANALYTICS_DOMAIN` after domain rollout.
+  - Implement Phase 2 wrapper/helper and Phase 3 event instrumentation.
 
 ## Domain direction note (2026-03-09)
 - Tracking artifact: `docs/planning/domain-direction-musifer-studio-art.md`.
