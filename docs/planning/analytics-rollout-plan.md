@@ -5,7 +5,8 @@ Snapshot date: 2026-03-09 (branch `experimental`)
 Status
 - Phase 1 base analytics script insertion strategy is implemented on `experimental` (2026-03-09).
 - Build-time env gating is active in the GitHub Pages production workflow and Eleventy global data.
-- Phase 2+ work (shared wrapper + page-level instrumentation) remains pending.
+- Phase 2 shared wrapper/helper layer is implemented on `experimental` (2026-03-09).
+- Phase 3+ work (page-level instrumentation and expanded QA) remains pending.
 
 ## 1. Current architecture assessment
 - Framework/build system:
@@ -68,6 +69,7 @@ Status
   - Production-only analytics collection for the first rollout.
 - Build-time gating contract (implemented):
   - Production analytics enablement uses an explicit build-time environment flag contract. The GitHub Pages production deploy workflow sets `ANALYTICS_ENABLED=true`, `ANALYTICS_PROVIDER=umami`, and `ANALYTICS_DOMAIN=musifer.studio`. Eleventy reads these from `process.env`, exposes them via a global `analytics` data object, and `base.njk` includes analytics only when `analytics.enabled` is true. Non-production builds keep analytics disabled by default.
+  - Active production-domain behavior is controlled by `ANALYTICS_DOMAIN`. Runtime wrapper checks use the configured domain value rather than assuming a future canonical domain.
 - Privacy/disclosure readiness tracking:
   - Active privacy policy reference: [`docs/planning/privacy-policy-draft.md`](privacy-policy-draft.md) (content finalized; filename retained for continuity).
 - Netlify status for this plan:
@@ -93,14 +95,20 @@ Status
 - Implemented provider template boundary:
   - Umami provider markup is isolated in `src/_includes/analytics/umami.njk`.
   - Provider/domain values are consumed from global `analytics` data instead of hard-coded route/template values.
-- Wrapper/helper contract:
-  - Introduce one shared client helper in `src/_assets/scripts/analytics.js` (planned, not implemented in this pass).
-  - Contract shape:
-    - `pageview(path, props?)`
-    - `track(eventName, props?)`
+- Implemented wrapper/helper contract:
+  - Shared helper is implemented at `src/_assets/scripts/analytics.js`.
+  - `base.njk` now publishes a minimal runtime config object (`window.__MUSIFER_ANALYTICS__`) and loads the helper script.
+  - Public helper API is exposed via `window.musiferAnalytics`:
+    - `trackPageView(pathOverride?)`
+    - `trackEvent(name, props?)`
+    - `trackCTA(id, props?)`
+    - `trackOutbound(url, props?)`
+    - `trackContact(status, props?)`
+    - `getState()`
   - Behavior:
-    - no-op when analytics is disabled or provider is unavailable.
-    - normalize payload keys/values before forwarding to provider adapter.
+    - no-op when analytics is disabled, config is incomplete, provider adapter is unavailable, or hostname does not match configured active domain.
+    - normalize event names and property keys/values to portable, flat, serializable payloads.
+    - keep provider-specific logic inside adapter internals (Umami implemented first).
 - Vendor-call guardrails:
   - No direct Umami/Plausible globals inside templates/components/page scripts.
   - Provider-specific implementation stays behind wrapper internals only.
@@ -209,19 +217,27 @@ Remaining implementation-prep items after Phase 0 lock
   - Establishes the gating foundation for Phase 2 wrapper/helper work.
 
 ### Phase 2: shared analytics helper/wrapper
-- Intended changes:
-  - Add shared `analytics.js` wrapper with provider adapter boundary.
-  - Route all event calls through wrapper API.
-- Likely files/systems touched:
+- Phase status:
+  - Implemented on `experimental` (2026-03-09).
+- Implemented changes:
+  - Added `src/_assets/scripts/analytics.js` with:
+    - provider adapter boundary (`umami` adapter implementation)
+    - public wrapper API (`trackPageView`, `trackEvent`, `trackCTA`, `trackOutbound`, `trackContact`, `getState`)
+    - safe no-op dispatch guards (disabled mode, missing config, missing adapter/global, hostname mismatch)
+    - payload normalization for event names and flat serializable props
+  - Updated `src/_includes/layouts/base.njk` to:
+    - hand off centralized runtime config through `window.__MUSIFER_ANALYTICS__`
+    - load `/scripts/analytics.js` without adding page-level instrumentation
+- Files/systems touched:
   - `src/_assets/scripts/analytics.js`
-  - `src/_includes/layouts/base.njk` (script load order/gating if needed)
+  - `src/_includes/layouts/base.njk`
 - Risk level: Low to Medium.
 - Acceptance criteria:
-  - No direct provider calls in templates/components.
-  - Wrapper safely no-ops when `analytics.enabled` is `false` or provider is unavailable.
-  - Payload normalization rules documented.
+  - Implemented: no direct provider calls in templates/components were introduced.
+  - Implemented: wrapper safely no-ops when `analytics.enabled` is `false`, provider config is missing, provider global is unavailable, or hostname fails active-domain check.
+  - Implemented: payload normalization is centralized in the helper before provider dispatch.
 - Dependency notes:
-  - Phase 1 env-variable and `analytics.*` config contract should be stable first.
+  - Built on the stable Phase 1 env-variable and `analytics.*` config contract.
 
 ### Phase 3: page-level instrumentation (`services`, `blog`, `contact`)
 - Intended changes:
@@ -277,6 +293,11 @@ Remaining implementation-prep items after Phase 0 lock
   - Verified env-enabled build emits analytics include from `layouts/base.njk` on public pages.
   - Verified `/admin` remains unaffected because it is outside the shared public base layout.
   - Verified provider/domain values are centralized via `src/_data/analytics.js`.
+- Phase 2 validation executed (2026-03-09):
+  - Verified wrapper script is emitted from the shared public layout and runtime config is handed off through one global object.
+  - Verified wrapper API methods return safely without throwing when analytics is disabled or provider global is unavailable.
+  - Verified helper normalization strips invalid event names/props and enforces flat serializable payload shape.
+  - Verified runtime domain guard evaluates against configured `analytics.domain` value, not a hard-coded future canonical domain.
 - Later-phase QA still required:
   - Event taxonomy validation for wrapper-driven/page-level instrumentation (Phase 2/3).
   - Duplicate-fire prevention checks for click event handlers once instrumentation is added.
@@ -287,6 +308,7 @@ Remaining implementation-prep items after Phase 0 lock
   - This plan now records Phase 1 as implemented with concrete file references and acceptance outcomes.
   - `docs/high-level-project-tracking.md` now reflects env-gating as implemented (not prep-only).
   - `README.md` and `docs/planning/README.md` wording were synced to avoid stale "planning only" analytics status.
+  - Phase 2 wrapper contract, runtime config handoff, and active-domain guard behavior are now documented.
 - Required follow-up documentation (later phases):
   - Publish final wrapper/event taxonomy details once Phase 2/3 ship.
   - Add production verification notes for live dashboards and conversion events.

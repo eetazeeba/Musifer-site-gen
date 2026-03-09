@@ -12,7 +12,7 @@ Purpose
 
 ## Analytics tangent status (Umami-first, vendor-agnostic) (2026-03-09)
 - Tracking artifact: `docs/planning/analytics-rollout-plan.md`.
-- Current `experimental` status: Phase 1 env-gated base insertion is implemented (not yet merged to `main`).
+- Current `experimental` status: Phase 1 env-gated base insertion and Phase 2 shared wrapper are implemented (not yet merged to `main`).
 - Phase 0 decisions locked in planning docs:
   - Canonical host baseline: GitHub Pages.
   - Domain direction: `musifer.studio` primary, `musifer.art` backup.
@@ -30,10 +30,15 @@ Purpose
     - `analytics.domain`
   - `src/_includes/layouts/base.njk` includes analytics only when `analytics.enabled` is `true`.
   - `/admin` remains unaffected because it does not use the shared public base layout.
+- Implemented Phase 2 state on `experimental`:
+  - `src/_assets/scripts/analytics.js` now exposes `window.musiferAnalytics` helper methods behind a provider adapter boundary.
+  - Runtime config handoff is centralized in `base.njk` through `window.__MUSIFER_ANALYTICS__`.
+  - Wrapper dispatch no-ops safely when disabled/unavailable and applies hostname checks against configured `analytics.domain`.
+  - Wrapper payload handling is normalized for portable flat event properties.
 - Remaining follow-up items:
   - Confirm where/how the finalized privacy policy will be published and linked in the live site.
-  - Confirm long-term production hostname/cutover details for `ANALYTICS_DOMAIN` after domain rollout.
-  - Implement Phase 2 wrapper/helper and Phase 3 event instrumentation.
+  - Align active production `ANALYTICS_DOMAIN` value with the current live host (`eetazeeba.github.io`) until domain cutover is implemented.
+  - Implement Phase 3 event instrumentation for `services`, `blog`, and `contact`.
 
 ## Domain direction note (2026-03-09)
 - Tracking artifact: `docs/planning/domain-direction-musifer-studio-art.md`.

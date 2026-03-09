@@ -19,8 +19,16 @@
 
   {% include "footer.html" %}
   <script src="/scripts/header-nav.js"></script>
+  <script>
+    window.__MUSIFER_ANALYTICS__ = {
+      enabled: {% if analytics.enabled %}true{% else %}false{% endif %},
+      provider: "{{ analytics.provider | escape }}",
+      domain: "{{ analytics.domain | escape }}"
+    };
+  </script>
   {% if analytics.enabled %}
     {% include "analytics/umami.njk" %}
   {% endif %}
+  <script defer src="/scripts/analytics.js"></script>
 </body>
 </html>

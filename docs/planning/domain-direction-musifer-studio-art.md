@@ -18,6 +18,7 @@
   - Useful as an alternate redirect domain if primary canonical routing later standardizes on `.studio`.
 
 ## Hosting implications (repo-visible facts only)
+- Current live production host reference for this implementation window: `eetazeeba.github.io` (pending custom-domain cutover).
 - Repo-documented deployment path is GitHub Pages via Actions from `main`:
   - Workflow: `.github/workflows/deploy-pages.yml`.
 - Netlify context:
