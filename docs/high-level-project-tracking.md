@@ -35,6 +35,9 @@ Purpose
   - Runtime config handoff is centralized in `base.njk` through `window.__MUSIFER_ANALYTICS__`.
   - Wrapper dispatch no-ops safely when disabled/unavailable and applies hostname checks against configured `analytics.domain`.
   - Wrapper payload handling is normalized for portable flat event properties.
+- Pre-wireframe taxonomy checkpoint (2026-03-09):
+  - Core analytics event baseline is frozen in `docs/planning/analytics-rollout-plan.md` (source of truth).
+  - Freeze is intended to reduce naming drift during `services`, `blog`, and `contact` wireframe/design and later implementation work.
 - Remaining follow-up items:
   - Confirm where/how the finalized privacy policy will be published and linked in the live site.
   - Align active production `ANALYTICS_DOMAIN` value with the current live host (`eetazeeba.github.io`) until domain cutover is implemented.
@@ -45,6 +48,12 @@ Purpose
 - Current direction: `musifer.studio` preferred primary; `musifer.art` retained as backup/brand-protection.
 - Current state on `main`: planning direction documented only; no canonical domain cutover/redirect implementation has been applied yet.
 - Follow-up remains: finalize canonical host/domain implementation and publish corresponding hosting/domain documentation updates after rollout.
+
+## Wireframe preview utility (2026-03-10)
+- Added isolated local workspace: `docs/wireframe-playground/` (Vite + React).
+- Current default preview target: `docs/wireframe-playground/src/services_page_wireframe.jsx`.
+- Intended for local wireframe iteration (including Preview.js workflows) only; it is not wired into Eleventy production output or GitHub Pages deployment.
+- `main` guard workflow: `.github/workflows/guard-experimental-only-main.yml` blocks this experimental-only path from landing on `main`.
 
 ## CMS operational notes
 - Decap config path: `src/admin/config.yml`

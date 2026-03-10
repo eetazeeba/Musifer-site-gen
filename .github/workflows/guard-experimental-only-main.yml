@@ -1,0 +1,28 @@
+name: Guard Main Branch (Experimental-only Paths)
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  guard-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Block experimental-only paths from main
+        run: |
+          set -euo pipefail
+
+          if [ -e "docs/wireframe-playground" ]; then
+            echo "::error title=Experimental-only path detected::docs/wireframe-playground must remain on experimental and must not land on main."
+            exit 1
+          fi

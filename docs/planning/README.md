@@ -8,7 +8,7 @@ Contents
 - `jamstack-main-migration-plan.md`: branch consolidation and cutover plan/history.
 - `responsive-layout-navigation-refresh-plan.md`: responsive/navigation roadmap and phase status.
 - `responsive-layout-phase-4-content-modules-implementation-brief.md`: Phase 4 implementation-state brief tied to the roadmap.
-- `analytics-rollout-plan.md`: analytics rollout plan (`Umami` first, `Plausible`-compatible later) with Phase 1 env-gated base insertion documented as implemented on `experimental` (2026-03-09).
+- `analytics-rollout-plan.md`: analytics rollout plan (`Umami` first, `Plausible`-compatible later) with Phase 1/2 implementation checkpoints and the pre-wireframe frozen core event taxonomy baseline documented on `experimental` (2026-03-09).
 - `domain-direction-musifer-studio-art.md`: domain direction decision record (`musifer.studio` primary, `musifer.art` backup/protection).
 - `privacy-policy-draft.md`: finalized privacy/disclosure reference document used by analytics Phase 0 decisions (filename retained for continuity).
 

@@ -36,7 +36,7 @@ Status
   - All pageview/event calls should flow through one internal helper contract.
   - Provider selection should be centralized in config, not distributed across templates.
 - Plausible-compatible later:
-  - Keep event names short and stable (for example `cta_click`, `service_intent`, `blog_article_open`, `contact_submit_start`).
+  - Keep event names short and stable (for example `cta_click`, `service_interest`, `blog_engagement`, `form_submit`).
   - Keep properties flat and portable (string/number/boolean only; avoid nested payloads).
   - Keep wrapper interface generic (`pageview`, `track`) so provider adapters can swap with minimal template churn.
 - Not directly portable between providers:
@@ -52,24 +52,24 @@ Status
 - Why feasible:
   - Single shared public base layout allows one low-churn script insertion strategy.
   - Static MPA model supports baseline pageviews without SPA route listeners.
-  - Existing passthrough script pipeline supports adding a shared analytics helper later.
+  - Existing passthrough script pipeline now carries the shared analytics helper and supports later page-level instrumentation.
 - Caveats now narrowed to implementation readiness:
   - Domain direction is documented, but final DNS/canonical redirect implementation is still pending.
   - Privacy policy now exists as a finalized planning reference and must be published/linked in the live site when analytics is enabled.
-  - The Phase 1 analytics gating contract wiring is implemented; wrapper/instrumentation phases remain pending.
+  - The Phase 1 gating contract and Phase 2 wrapper are implemented; page-level instrumentation phases remain pending.
 
 ## 4. Phase 0 decisions and assumptions
 - Canonical hosting/deployment baseline:
   - GitHub Pages is the canonical host baseline for this analytics rollout.
 - Domain direction:
-  - Primary domain direction: `musifer.studio`.
+  - Current production domain: `eetazeeba.github.io`.
+  - Intended canonical domain after cutover: `musifer.studio`.
   - Secondary/backup direction: `musifer.art`.
   - Domain planning reference: [`docs/planning/domain-direction-musifer-studio-art.md`](domain-direction-musifer-studio-art.md).
 - Initial rollout scope:
   - Production-only analytics collection for the first rollout.
 - Build-time gating contract (implemented):
-  - Production analytics enablement uses an explicit build-time environment flag contract. The GitHub Pages production deploy workflow sets `ANALYTICS_ENABLED=true`, `ANALYTICS_PROVIDER=umami`, and `ANALYTICS_DOMAIN=musifer.studio`. Eleventy reads these from `process.env`, exposes them via a global `analytics` data object, and `base.njk` includes analytics only when `analytics.enabled` is true. Non-production builds keep analytics disabled by default.
-  - Active production-domain behavior is controlled by `ANALYTICS_DOMAIN`. Runtime wrapper checks use the configured domain value rather than assuming a future canonical domain.
+  - Production analytics enablement uses an explicit build-time environment flag contract. The GitHub Pages production deploy workflow sets `ANALYTICS_ENABLED=true`, `ANALYTICS_PROVIDER=umami`, and `ANALYTICS_DOMAIN=eetazeeba.github.io`. Eleventy reads these from `process.env`, exposes them via a global `analytics` data object, and `base.njk` includes analytics only when `analytics.enabled` is true. Non-production builds keep analytics disabled by default.
 - Privacy/disclosure readiness tracking:
   - Active privacy policy reference: [`docs/planning/privacy-policy-draft.md`](privacy-policy-draft.md) (content finalized; filename retained for continuity).
 - Netlify status for this plan:
@@ -118,52 +118,36 @@ Status
   - Event names: lowercase snake_case, verb-oriented, stable.
   - Properties: flat keys, short values, avoid nested objects and provider-specific field names.
 
-## 6. Proposed analytics event structure
-Event design rules
-- Track meaningful intent/conversion signals, not UI noise.
-- Avoid event spam from hover/scroll/mousemove.
-- Keep properties minimal and reusable across providers.
+## 6. Core event taxonomy (pre-wireframe freeze)
+Pre-wireframe core taxonomy freeze (2026-03-09)
+- The following core event names are frozen as the pre-wireframe baseline for upcoming landing-page work. `services`, `blog`, and `contact` wireframes and later implementation should use this vocabulary by default rather than inventing ad-hoc event names. New event names should only be introduced when a clear measurement need cannot be expressed through the existing baseline and the change is recorded in planning/tracking documentation.
 
-Global events
-- `nav_link_click`
-  - Trigger: top-level or submenu nav link click.
-  - Properties: `nav_section`, `nav_label`, `target_path`.
+Frozen canonical baseline event names (exact)
 - `cta_click`
-  - Trigger: primary CTA click from major sections.
-  - Properties: `page_type`, `cta_id`, `target_path`.
+- `nav_click`
 - `outbound_click`
-  - Trigger: user clicks external link.
-  - Properties: `page_type`, `link_domain`, `link_label`.
+- `form_start`
+- `form_submit`
+- `service_interest`
+- `blog_engagement`
+- `related_post_click`
+- `contact_method_click`
+- `media_play`
+- `media_complete`
+- `media_download`
+- `media_expand`
+- `embed_interaction`
 
-`services` events
-- `service_intent`
-  - Trigger: service-card/service-link click.
-  - Properties: `service_slug`, `service_group`, `from_path`.
-- `quote_flow_start`
-  - Trigger: click into pricing/quote form entry.
-  - Properties: `entry_point`, `from_path`.
+Baseline guardrails
+- Use the frozen baseline event names above as the default vocabulary.
+- Prefer meaningful action/conversion tracking over noisy UI telemetry.
+- Keep properties flat, portable, and serializable across providers.
+- Avoid provider-specific naming assumptions in event names and properties.
+- Avoid inventing page-specific event names during wireframing unless a later documented decision explicitly calls for them.
 
-`blog` events (priority surface)
-- `blog_hub_open`
-  - Trigger: open `/blog/` hub or blog category entry.
-  - Properties: `entry_source`, `category`.
-- `blog_article_open`
-  - Trigger: click from blog listing/category into article page.
-  - Properties: `category`, `post_slug`, `from_path`.
-- `blog_growth_cta`
-  - Trigger: subscribe/follow/contact-for-content CTA interaction (once present).
-  - Properties: `cta_id`, `placement`, `from_path`.
-
-`contact` events
-- `contact_path_select`
-  - Trigger: user chooses a contact route (general, positions, locations, etc.).
-  - Properties: `contact_path`, `from_path`.
-- `contact_submit_start`
-  - Trigger: first interaction with contact submit flow entry point.
-  - Properties: `contact_type`, `from_path`.
-- `contact_submit_success`
-  - Trigger: confirmed contact submission completion (if flow exists).
-  - Properties: `contact_type`, `completion_path`.
+Media and embed note
+- `media_*` events should capture meaningful on-site media interactions without over-instrumenting trivial playback-state churn.
+- `embed_interaction` is retained because third-party platforms such as Bandcamp, Spotify, SoundCloud, or Apple Music may be easier to integrate than fully native media systems, and their interaction surfaces may need distinct treatment.
 
 ## 7. Rollout phases
 ### Phase 0: decisions documented and locked (planning complete)
@@ -274,9 +258,12 @@ Remaining implementation-prep items after Phase 0 lock
   - Requires Phase 1-3 completion.
 
 ## 8. Landing-page coordination
+- Pre-wireframe checkpoint (2026-03-09):
+  - Core taxonomy baseline is frozen in Section 6 and is now the default vocabulary for `services`, `blog`, and `contact` wireframes and later instrumentation.
+  - Any new event names require a documented business-question justification in planning/tracking docs.
 - Before page implementation (`services`, `blog`, `contact`):
   - Lock Phase 0 decisions and wrapper contract.
-  - Freeze core event names so page work does not invent ad-hoc naming.
+  - Use the frozen baseline event list from Section 6; do not invent ad-hoc names in page-level planning.
 - During page implementation:
   - Add instrumentation only for meaningful CTA/funnel actions already present in UX.
   - Keep each new event mapped to a clear business question.
