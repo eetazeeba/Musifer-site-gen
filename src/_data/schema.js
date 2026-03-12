@@ -18,7 +18,21 @@ function normalizeDate(value) {
     return null;
   }
 
-  return String(value).trim().replace(" ", "T");
+  const raw = String(value).trim();
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    return raw;
+  }
+
+  if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(raw)) {
+    return `${raw.replace(" ", "T")}:00Z`;
+  }
+
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(raw)) {
+    return `${raw}:00Z`;
+  }
+
+  return raw.replace(" ", "T");
 }
 
 function normalizeAuthor(author) {
