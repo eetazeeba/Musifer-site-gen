@@ -21,10 +21,10 @@
 ## Key directories
 - `src/`: Eleventy templates, includes, and route pages
 - `src/_assets/`: source assets published as `/CSS`, `/Images`, and `/scripts`
-- `content/`: CMS content entries (blog, lessons, profiles)
+- `content/`: Content Management System (CMS) content entries (blog, lessons, profiles)
 - `scripts/cms/`: CMS validation/index scripts
 - `docs/`: planning, migration, and architecture notes
-- `.github/workflows/`: CI/CD workflows (including Pages deploy)
+- `.github/workflows/`: Continuous Integration and Continuous Delivery/Deployment (CI/DI) workflows (including Pages deploy)
 
 ## Documentation map
 - [`docs/planning/README.md`](docs/planning/README.md): planning-folder index and scope notes
