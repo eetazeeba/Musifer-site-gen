@@ -64,31 +64,35 @@ git push -u origin HEAD
 
 Do not leave the current device with unpushed branch work if you expect to continue on the other machine.
 
-## Open A Pull Request Back To `main`
+## Merge A Feature Branch Back Into `main`
 
-This repo follows a GitHub-style branch flow: open a pull request into `main`, let required checks finish, use review to settle the last changes, then merge with **Squash and merge**. GitHub references:
+Use this when a feature branch is ready to come back into `main` through the repo's GitHub-style pull-request flow. GitHub references:
 
 - [GitHub flow](https://docs.github.com/get-started/quickstart/github-flow)
 - [About protected branches](https://docs.github.com/enterprise/admin/guides/developer-workflow/about-protected-branches-and-required-status-checks)
 - [About pull request merges](https://docs.github.com/articles/about-pull-request-merge-squashing)
 - [Merging a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request?tool=cli)
 
-## Pull Request Decision Tree
+### Decide which pre-PR path you need
 
-Before opening the pull request, use this decision tree:
+Use `Path A` if the feature branch only exists on your machine and has not been pushed yet.
 
-1. If the feature branch only exists locally, push it to `origin` first.
-2. If the feature branch already exists on `origin`, sync it with both `origin/<branch>` and `origin/main`.
-3. After either path, run the shared pre-pull-request checks and push the final branch state.
+Use `Path B` if the feature branch already exists on `origin` and you need to sync it before opening the pull request.
 
-### Path A: first push for a local-only branch
+Both paths end by rebasing onto `origin/main`. If that rebase stops with conflicts, resolve or abort the rebase before moving on to the shared checks.
+
+### Path A: local-only branch
 
 ```bash
 git checkout <existing-feature-branch>
 git push -u origin HEAD
+git fetch origin
+git rebase origin/main
 ```
 
-### Path B: branch already exists on `origin`
+If `git rebase origin/main` stops with conflicts, finish that rebase before continuing.
+
+### Path B: branch already on `origin`
 
 ```bash
 git fetch origin
@@ -97,7 +101,18 @@ git pull --rebase origin <existing-feature-branch>
 git rebase origin/main
 ```
 
-### Shared pre-pull-request checks
+If `git rebase origin/main` stops with conflicts in either path, use this checkpoint before continuing:
+
+```bash
+git status
+# resolve conflicted files
+git add <resolved-file>
+git rebase --continue
+# or, to abandon the rebase:
+git rebase --abort
+```
+
+### Shared checks before opening the PR
 
 ```bash
 npm ci
@@ -105,11 +120,10 @@ npm run build
 npm run cms:validate
 git push
 ```
-## Rebase-conflict Resolution
 
-If `git rebase origin/main` reports conflicts, use the rebase-conflict routine below, then run the shared pre-pull-request checks and push again.
+If a content change requires a refreshed index, run `npm run cms:check` manually before the final push and include the tracked `content/_index.json` update in the branch.
 
-Pull request routine:
+### Open, review, and squash merge the PR
 
 1. Open the pull request from the feature branch into `main`.
 2. Wait for `guard-main` and `validate-main-pr` to pass.
@@ -117,11 +131,24 @@ Pull request routine:
 4. Merge with **Squash and merge**.
 5. Delete the feature branch after merge.
 
-Notes:
+Deployment still happens only after the squash merge lands on `main`.
 
-- Deployment still happens only after the squash merge lands on `main`.
-- `cms:index` is not a required PR check yet because it rewrites tracked `content/_index.json` with a generated timestamp.
-- If a content change requires a refreshed index, run `npm run cms:check` manually before merging and include the resulting tracked index update in the branch.
+### Quick reference: usual branch-already-on-`origin` case
+
+Use this only once the full flow above feels familiar:
+
+```bash
+git fetch origin
+git checkout <existing-feature-branch>
+git pull --rebase origin <existing-feature-branch>
+git rebase origin/main
+npm ci
+npm run build
+npm run cms:validate
+git push
+```
+
+After that, follow the single PR review and **Squash and merge** sequence above.
 
 ## Recovery Commands
 
