@@ -20,7 +20,14 @@ description: Browse Musifer guides for evergreen walkthroughs, checklists, and p
         <h2 class="card-title" id="guides-list-heading">What is live in this lane</h2>
         <p class="blog-section-copy">{{ bucket.countLabel }}</p>
       </div>
-      <a class="btn btn--secondary" href="/blog/">Back to blog hub</a>
+      <a class="btn btn--secondary"
+        href="/blog/"
+        data-analytics-event="blog_engagement"
+        data-analytics-surface="bucket_header"
+        data-analytics-bucket="guides"
+        data-analytics-destination="blog_hub">
+        Back to blog hub
+      </a>
     </div>
 
     {% if bucket.entries.length %}
@@ -30,7 +37,14 @@ description: Browse Musifer guides for evergreen walkthroughs, checklists, and p
         <p class="blog-inline-meta">{{ entry.metadataLabel }}</p>
         <h3 class="card-title">{{ entry.title }}</h3>
         <p>{{ entry.summary }}</p>
-        <a class="blog-inline-link" href="{{ entry.url }}">Read guide</a>
+        <a class="blog-inline-link"
+          href="{{ entry.url }}"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="bucket_entries"
+          data-analytics-bucket="guides"
+          data-analytics-entry="{{ entry.title }}">
+          Read guide
+        </a>
       </article>
       {% endfor %}
     </div>
@@ -38,8 +52,21 @@ description: Browse Musifer guides for evergreen walkthroughs, checklists, and p
     <div class="blog-empty-state">
       <p>This lane exists in the public IA, but it is being filled carefully rather than padded with thin archive copy.</p>
       <div class="blog-browse-links">
-        <a class="btn" href="/blog/">Return to the blog hub</a>
-        <a class="btn btn--secondary" href="/services/production/">Explore services instead</a>
+        <a class="btn"
+          href="/blog/"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="bucket_empty_state"
+          data-analytics-bucket="guides"
+          data-analytics-destination="blog_hub">
+          Return to the blog hub
+        </a>
+        <a class="btn btn--secondary"
+          href="/services/production/"
+          data-analytics-event="service_interest"
+          data-analytics-service="production_support"
+          data-analytics-surface="bucket_empty_state">
+          Explore services instead
+        </a>
       </div>
     </div>
     {% endif %}

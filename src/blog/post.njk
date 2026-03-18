@@ -16,9 +16,21 @@
           {% endif %}
         </p>
         {% if entry.bucketIsPublic %}
-        <a class="btn btn--secondary" href="{{ entry.bucketUrl }}">Browse {{ entry.bucketTitle }}</a>
+        <a class="btn btn--secondary"
+          href="{{ entry.bucketUrl }}"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="article_hero"
+          data-analytics-bucket="{{ entry.bucket }}">
+          Browse {{ entry.bucketTitle }}
+        </a>
         {% else %}
-        <a class="btn btn--secondary" href="/blog/">Back to the blog hub</a>
+        <a class="btn btn--secondary"
+          href="/blog/"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="article_hero"
+          data-analytics-destination="blog_hub">
+          Back to the blog hub
+        </a>
         {% endif %}
       </aside>
     </div>
@@ -43,16 +55,34 @@
             <p class="blog-inline-meta">{{ related.metadataLabel }}</p>
             <h3 class="card-title">{{ related.title }}</h3>
             <p>{{ related.summary }}</p>
-            <a class="blog-inline-link" href="{{ related.url }}">Read related post</a>
+            <a class="blog-inline-link"
+              href="{{ related.url }}"
+              data-analytics-event="related_post_click"
+              data-analytics-surface="related_posts"
+              data-analytics-entry="{{ related.title }}">
+              Read related post
+            </a>
           </article>
           {% endfor %}
         </div>
         {% else %}
         <p>Use the bucket hubs and curated blog landing page to find the next useful lane without getting buried in archive noise.</p>
         <div class="module-card-stack is-compact">
-          <a class="btn btn--soft-emphasis" href="/blog/">Back to the blog hub</a>
+          <a class="btn btn--soft-emphasis"
+            href="/blog/"
+            data-analytics-event="blog_engagement"
+            data-analytics-surface="article_fallback"
+            data-analytics-destination="blog_hub">
+            Back to the blog hub
+          </a>
           {% if entry.bucketIsPublic %}
-          <a class="btn btn--secondary" href="{{ entry.bucketUrl }}">Browse {{ entry.bucketTitle }}</a>
+          <a class="btn btn--secondary"
+            href="{{ entry.bucketUrl }}"
+            data-analytics-event="blog_engagement"
+            data-analytics-surface="article_fallback"
+            data-analytics-bucket="{{ entry.bucket }}">
+            Browse {{ entry.bucketTitle }}
+          </a>
           {% endif %}
         </div>
         {% endif %}
@@ -63,9 +93,26 @@
         <h2 class="card-title">Move from reading into real support</h2>
         <p>When the article stops being enough and the project needs structure, the next step should stay clear.</p>
         <div class="module-card-stack is-compact">
-          <a class="btn" href="/services/production/">Explore production support</a>
-          <a class="btn btn--secondary" href="/services/rates-quote/">Use the rates / quote path</a>
-          <a class="blog-inline-link" href="/contact/work-with-us/">Prefer a direct conversation?</a>
+          <a class="btn"
+            href="/services/production/"
+            data-analytics-event="service_interest"
+            data-analytics-service="production_support"
+            data-analytics-surface="article_help">
+            Explore production support
+          </a>
+          <a class="btn btn--secondary"
+            href="/services/rates-quote/"
+            data-analytics-event="service_interest"
+            data-analytics-service="rates_quote"
+            data-analytics-surface="article_help">
+            Use the rates / quote path
+          </a>
+          <a class="blog-inline-link"
+            href="/contact/work-with-us/"
+            data-analytics-contact="work_with_us"
+            data-analytics-surface="article_help">
+            Prefer a direct conversation?
+          </a>
         </div>
       </section>
     </aside>

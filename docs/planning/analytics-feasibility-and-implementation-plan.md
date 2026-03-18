@@ -40,7 +40,9 @@ Status
 - SEO-adjacent documentation currently present:
   - `docs/sitemap.md` acts as the route and IA reference.
   - `docs/cms-content-spec.md` documents `canonical_url` as an optional content field.
-  - No dedicated documentation was found for robots strategy, structured data/JSON-LD policy, or final metadata/canonical tagging rules. Treat that absence as "not yet documented," not "already implemented elsewhere."
+  - [SEO/strategy.md](SEO/strategy.md) now owns sitewide metadata, canonical, robots, and SEO policy.
+  - [SEO/schema-plan.md](SEO/schema-plan.md) documents the structured-data and JSON-LD approach.
+  - [SEO/launch-checklist.md](SEO/launch-checklist.md) captures robots, sitemap, and search-launch verification checks.
 
 ## 3. Superseded guidance from the earlier Plausible review
 - The previous Plausible-specific embed recommendations in this file are superseded.
@@ -79,12 +81,13 @@ Planning decisions that still need later validation
 What appears aligned now
 - Infrastructure planning now consistently assumes Porkbun -> transitional GitHub Pages custom domain -> Vercel target host -> Proton later for email.
 - The sitemap and IA documentation still reads as valid planning/reference material.
+- Dedicated SEO policy references now exist for metadata/canonical rules, schema guidance, and launch validation.
 - No active doc currently claims that analytics, canonical-domain SEO work, or final host-level SEO behavior is already implemented.
 
 What still needs later validation
 - Canonical routing, redirect behavior, and verification on `musifer.studio` during the GitHub Pages to Vercel transition.
 - Redirect behavior and canonical-domain enforcement during the GitHub Pages to Vercel transition.
-- Final metadata, canonical tag, and structured-data policy once the hosting path stabilizes.
+- Final host-level verification of the documented metadata, canonical tag, and structured-data policy once the hosting path stabilizes.
 - Final sitemap and robots behavior on the canonical domain after hosting migration.
 - Any privacy or disclosure updates that become necessary when analytics is actually implemented.
 

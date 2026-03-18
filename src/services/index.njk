@@ -156,7 +156,17 @@ adjacentPaths:
         </div>
 
         <p class="services-fit-note">{{ lane.fit }}</p>
-        <a class="services-inline-link" href="{{ lane.linkHref }}">{{ lane.linkLabel }}</a>
+        <a class="services-inline-link"
+          href="{{ lane.linkHref }}"
+          {% if lane.linkHref == "/contact/work-with-us/" %}
+          data-analytics-contact="work_with_us"
+          {% else %}
+          data-analytics-event="service_interest"
+          data-analytics-service="{{ lane.title }}"
+          {% endif %}
+          data-analytics-surface="services_lane">
+          {{ lane.linkLabel }}
+        </a>
       </article>
       {% endfor %}
     </div>
@@ -192,7 +202,13 @@ adjacentPaths:
         If you are unsure where the project belongs, the quote path still works as the general entry point.
         Describe the work in plain language and sort the details together from there.
       </p>
-      <a class="services-inline-link" href="/services/rates-quote/">Bring the project into the quote path</a>
+      <a class="services-inline-link"
+        href="/services/rates-quote/"
+        data-analytics-event="service_interest"
+        data-analytics-service="rates_quote"
+        data-analytics-surface="project_fit">
+        Bring the project into the quote path
+      </a>
     </article>
   </section>
 
@@ -208,8 +224,19 @@ adjacentPaths:
       </div>
 
       <div class="services-cta-cluster">
-        <a class="btn services-cta-primary" href="/services/rates-quote/">Start rates / quote</a>
-        <a class="btn btn--secondary" href="/contact/work-with-us/">Use the work-with-us path</a>
+        <a class="btn services-cta-primary"
+          href="/services/rates-quote/"
+          data-analytics-event="service_interest"
+          data-analytics-service="rates_quote"
+          data-analytics-surface="conversion_band">
+          Start rates / quote
+        </a>
+        <a class="btn btn--secondary"
+          href="/contact/work-with-us/"
+          data-analytics-contact="work_with_us"
+          data-analytics-surface="conversion_band">
+          Use the work-with-us path
+        </a>
         <p class="services-cta-note">
           Tell Musifer what you are building, what stage it is in, and where support would unblock the next move.
         </p>
@@ -228,7 +255,17 @@ adjacentPaths:
           <h3 class="card-title">{{ item.question }}</h3>
           <p>{{ item.answer }}</p>
           {% if item.linkHref and item.linkLabel %}
-          <a class="services-inline-link" href="{{ item.linkHref }}">{{ item.linkLabel }}</a>
+          <a class="services-inline-link"
+            href="{{ item.linkHref }}"
+            {% if item.linkHref == "/contact/community/" %}
+            data-analytics-contact="community"
+            {% else %}
+            data-analytics-event="service_interest"
+            data-analytics-service="rates_quote"
+            {% endif %}
+            data-analytics-surface="services_faq">
+            {{ item.linkLabel }}
+          </a>
           {% endif %}
         </div>
         {% endfor %}
@@ -243,7 +280,20 @@ adjacentPaths:
         <article class="services-route-card">
           <h3 class="card-title">{{ path.title }}</h3>
           <p>{{ path.body }}</p>
-          <a class="services-inline-link" href="{{ path.href }}">{{ path.label }}</a>
+          <a class="services-inline-link"
+            href="{{ path.href }}"
+            {% if path.href == "/contact/work-with-us/" %}
+            data-analytics-contact="work_with_us"
+            {% elseif path.href == "/blog/" %}
+            data-analytics-event="blog_engagement"
+            data-analytics-destination="blog_hub"
+            {% else %}
+            data-analytics-cta="services_adjacent_about"
+            data-analytics-destination="about"
+            {% endif %}
+            data-analytics-surface="adjacent_paths">
+            {{ path.label }}
+          </a>
         </article>
         {% endfor %}
       </div>
@@ -251,7 +301,13 @@ adjacentPaths:
         <p class="services-final-copy">
           If the project has shape, Musifer can help find the next clean move without turning the process into a performance.
         </p>
-        <a class="btn" href="/services/rates-quote/">Take the quote path</a>
+        <a class="btn"
+          href="/services/rates-quote/"
+          data-analytics-event="service_interest"
+          data-analytics-service="rates_quote"
+          data-analytics-surface="final_band">
+          Take the quote path
+        </a>
       </div>
     </article>
   </section>

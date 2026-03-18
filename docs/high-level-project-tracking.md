@@ -23,14 +23,15 @@ Purpose
 - Node baseline source of truth: `.nvmrc` (used for local development and Pages CI)
 - Rollout planning artifact: `docs/planning/domain-hosting-email-rollout-plan.md`
 
-## Analytics and SEO planning status (Umami staged rollout) (2026-03-13)
+## Analytics and SEO planning status (Umami staged rollout) (2026-03-16)
 - Tracking artifacts:
   - `docs/planning/analytics-rollout-plan.md`
   - `docs/planning/analytics-feasibility-and-implementation-plan.md`
-- Current `main` status: staged analytics scaffolding has been merged, while broader instrumentation, privacy publication, and rollout verification remain open.
+- Current `main` status: staged analytics scaffolding and initial Phase 3 instrumentation are merged for meaningful `/services/` and `/blog/` CTA surfaces, while scaffold-only `/contact/` page instrumentation, privacy publication, and rollout verification remain open.
 - Confirmed repo state:
   - Shared public layout now includes analytics gating and provider wiring for production builds.
   - The Pages deploy workflow sets production analytics environment variables.
+  - Delegated click instrumentation now emits `service_interest`, `blog_engagement`, `related_post_click`, and `contact_method_click` events from the current `services` and `blog` templates.
 - Current planning direction:
   - Near-term analytics platform direction: Umami.
   - Earlier Plausible-specific guidance is now superseded unless explicitly retained as historical context in the tracking artifacts.
@@ -40,12 +41,12 @@ Purpose
   - The target long-term host is Vercel after the custom-domain transition is complete.
   - SEO validation for canonical routing, metadata behavior, robots behavior, and final sitemap behavior still depends on the later domain and hosting rollout phases.
   - Historical Netlify linkage (`creative-cassata-f39fb9`) is not the active rollout plan and still has no repo-tracked deploy/config artifact.
-- Open decisions before implementation:
+- Open decisions before fuller rollout verification:
   - Confirm `musifer.studio` resolution, HTTPS, and Pages-settings stability once the manual GitHub Pages and Porkbun steps are completed.
   - Whether analytics should start during the transitional GitHub Pages phase or wait for Vercel cutover.
   - Production-only tracking versus preview/branch deploy tracking.
   - Privacy/disclosure requirements before enabling analytics.
-  - Initial event taxonomy priorities for `/services/`, `/blog/`, and `/contact/`.
+  - `/contact/` and thin child-page instrumentation should wait until those templates expose real funnel actions beyond scaffold navigation.
 
 ## Domain and infrastructure note (2026-03-13)
 - Tracking artifacts:
@@ -63,11 +64,10 @@ Purpose
   - keep the default GitHub Pages hostname available until the custom domain is stable
   - avoid adding Vercel or Proton records during Phase 1
 
-## Wireframe preview utility (2026-03-10)
-- Added isolated local workspace: `docs/wireframe-playground/` (Vite + React).
-- Current default preview target: `docs/wireframe-playground/src/services_page_wireframe.jsx`.
-- Intended for local wireframe iteration (including Preview.js workflows) only; it is not wired into Eleventy production output or GitHub Pages deployment.
-- `main` guard workflow: `.github/workflows/guard-experimental-only-main.yml` blocks this experimental-only path from landing on `main`.
+## Historical wireframe preview note (2026-03-10)
+- docs/wireframe-playground/ was an experimental-only local wireframe workspace, not a main repo workspace.
+- The path is not present in this checkout of main.
+- .github/workflows/guard-experimental-only-main.yml explicitly blocks that path from landing on main.
 
 ## CMS operational notes
 - Decap config path: `src/admin/config.yml`

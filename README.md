@@ -5,7 +5,7 @@
 - Content managed in Markdown/front matter files.
 - Optional Decap CMS admin interface for editing content.
 - GitHub remains the source-of-truth repo for code, content, and normal CI/CD workflow context.
-- Phase 1 is active: `musifer.studio` is the canonical public domain on transitional GitHub Pages, while Vercel and Proton remain later-phase work.
+- Phase 1 is active: the repo targets `musifer.studio` as the canonical public domain on transitional GitHub Pages, while live custom-domain activation still depends on external Pages/DNS verification and Vercel and Proton remain later-phase work.
 
 ## Core stack and infrastructure
 - [Eleventy (11ty)](https://www.11ty.dev/docs/) for static site generation
@@ -70,7 +70,7 @@ Use `npm ci` for normal setup and branch sync on an existing clone. Use `npm ins
 
 ## Transitional GitHub Pages notes
 - Deployment workflow: `.github/workflows/deploy-pages.yml`
-- Expected near-term model: build `_site` from `main`, then deploy via Actions while `musifer.studio` is served as the transitional public domain.
+- Expected near-term model: build `_site` from `main`, then deploy via Actions with repo metadata and workflows targeting `musifer.studio` as the transitional public domain once external Pages/DNS verification is complete.
 - For this Actions-based Pages deploy, the custom domain is configured in GitHub repo settings; this repo does not need a tracked `CNAME` file for Phase 1.
 - Planned follow-up: retire or reduce GitHub Pages custom-domain usage once Vercel is live on the canonical domain.
 - Helpful docs:
@@ -95,3 +95,4 @@ Use `npm ci` for normal setup and branch sync on an existing clone. Use `npm ins
   1. `npm run start`
   2. `npm run cms:local`
   3. Open `http://localhost:8080/admin/`
+

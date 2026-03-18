@@ -216,10 +216,90 @@
     return dispatchEvent("outbound_click", nextProps);
   }
 
-  function trackContact(status, props) {
-    var cleanStatus = normalizeToken(status, 40);
-    if (!cleanStatus) return false;
-    return dispatchEvent("contact_" + cleanStatus, props);
+  function trackContact(method, props) {
+    var cleanMethod = normalizeToken(method, 40);
+    if (!cleanMethod) return false;
+
+    return dispatchEvent("contact_method_click", mergeProps(props, {
+      contact_method: cleanMethod
+    }));
+  }
+
+  function readAnalyticsProps(element) {
+    if (!element || !element.attributes) return {};
+
+    var props = {};
+    var reservedKeys = {
+      "data-analytics-event": true,
+      "data-analytics-cta": true,
+      "data-analytics-contact": true,
+      "data-analytics-outbound": true
+    };
+
+    Array.prototype.forEach.call(element.attributes, function (attribute) {
+      var name = attribute && attribute.name;
+      if (!name) return;
+      if (reservedKeys[name]) return;
+      if (name.indexOf("data-analytics-") !== 0) return;
+
+      var key = name.slice("data-analytics-".length);
+      if (!key) return;
+
+      props[key] = attribute.value;
+    });
+
+    return props;
+  }
+
+  function findTrackedElement(target) {
+    var node = target && target.nodeType === 1 ? target : target && target.parentElement;
+
+    if (!node || typeof node.closest !== "function") {
+      return null;
+    }
+
+    return node.closest(
+      "[data-analytics-event], [data-analytics-cta], [data-analytics-contact], [data-analytics-outbound]"
+    );
+  }
+
+  function bindClickTracking() {
+    if (!document || typeof document.addEventListener !== "function") {
+      return;
+    }
+
+    document.addEventListener("click", function (event) {
+      var element = findTrackedElement(event.target);
+      if (!element) return;
+
+      var href = typeof element.getAttribute === "function"
+        ? asString(element.getAttribute("href"))
+        : "";
+      var props = readAnalyticsProps(element);
+      var ctaId = asString(element.getAttribute("data-analytics-cta"));
+      var contactMethod = asString(element.getAttribute("data-analytics-contact"));
+      var eventName = asString(element.getAttribute("data-analytics-event"));
+      var outboundFlag = asString(element.getAttribute("data-analytics-outbound"));
+
+      if (ctaId) {
+        trackCTA(ctaId, props);
+        return;
+      }
+
+      if (contactMethod) {
+        trackContact(contactMethod, props);
+        return;
+      }
+
+      if (outboundFlag && href) {
+        trackOutbound(href, props);
+        return;
+      }
+
+      if (eventName) {
+        trackEvent(eventName, props);
+      }
+    });
   }
 
   function getState() {
@@ -246,4 +326,6 @@
     trackContact: trackContact,
     getState: getState
   };
+
+  bindClickTracking();
 })();

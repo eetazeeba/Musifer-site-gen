@@ -20,7 +20,14 @@ description: Browse Musifer case studies for applied breakdowns, process notes, 
         <h2 class="card-title" id="case-studies-list-heading">What is live in this lane</h2>
         <p class="blog-section-copy">{{ bucket.countLabel }}</p>
       </div>
-      <a class="btn btn--secondary" href="/blog/">Back to blog hub</a>
+      <a class="btn btn--secondary"
+        href="/blog/"
+        data-analytics-event="blog_engagement"
+        data-analytics-surface="bucket_header"
+        data-analytics-bucket="case_studies"
+        data-analytics-destination="blog_hub">
+        Back to blog hub
+      </a>
     </div>
 
     {% if bucket.entries.length %}
@@ -30,7 +37,14 @@ description: Browse Musifer case studies for applied breakdowns, process notes, 
         <p class="blog-inline-meta">{{ entry.metadataLabel }}</p>
         <h3 class="card-title">{{ entry.title }}</h3>
         <p>{{ entry.summary }}</p>
-        <a class="blog-inline-link" href="{{ entry.url }}">Read case study</a>
+        <a class="blog-inline-link"
+          href="{{ entry.url }}"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="bucket_entries"
+          data-analytics-bucket="case_studies"
+          data-analytics-entry="{{ entry.title }}">
+          Read case study
+        </a>
       </article>
       {% endfor %}
     </div>
@@ -38,8 +52,21 @@ description: Browse Musifer case studies for applied breakdowns, process notes, 
     <div class="blog-empty-state">
       <p>Case studies are part of the public structure now, but they are being held until there is enough real material to justify the lane.</p>
       <div class="blog-browse-links">
-        <a class="btn" href="/blog/">Return to the blog hub</a>
-        <a class="btn btn--secondary" href="/services/rates-quote/">Use the quote path</a>
+        <a class="btn"
+          href="/blog/"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="bucket_empty_state"
+          data-analytics-bucket="case_studies"
+          data-analytics-destination="blog_hub">
+          Return to the blog hub
+        </a>
+        <a class="btn btn--secondary"
+          href="/services/rates-quote/"
+          data-analytics-event="service_interest"
+          data-analytics-service="rates_quote"
+          data-analytics-surface="bucket_empty_state">
+          Use the quote path
+        </a>
       </div>
     </div>
     {% endif %}

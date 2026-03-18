@@ -1,5 +1,7 @@
 # Responsive Layout and Navigation Refresh Plan
 
+Status note: completed roadmap retained for historical planning context; use current implementation docs and code for live behavior where older baseline notes differ.
+
 Purpose
 - Define an implementation-ready plan for the next UI refresh on `main`.
 - Focus on responsive navigation behavior, breakpoint strategy, and reusable content layout patterns.

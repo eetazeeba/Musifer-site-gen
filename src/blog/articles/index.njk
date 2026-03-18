@@ -20,7 +20,14 @@ description: Browse Musifer articles for editorial perspective, field notes, and
         <h2 class="card-title" id="articles-list-heading">What is live in this lane</h2>
         <p class="blog-section-copy">{{ bucket.countLabel }}</p>
       </div>
-      <a class="btn btn--secondary" href="/blog/">Back to blog hub</a>
+      <a class="btn btn--secondary"
+        href="/blog/"
+        data-analytics-event="blog_engagement"
+        data-analytics-surface="bucket_header"
+        data-analytics-bucket="articles"
+        data-analytics-destination="blog_hub">
+        Back to blog hub
+      </a>
     </div>
 
     {% if bucket.entries.length %}
@@ -30,7 +37,14 @@ description: Browse Musifer articles for editorial perspective, field notes, and
         <p class="blog-inline-meta">{{ entry.metadataLabel }}</p>
         <h3 class="card-title">{{ entry.title }}</h3>
         <p>{{ entry.summary }}</p>
-        <a class="blog-inline-link" href="{{ entry.url }}">Read article</a>
+        <a class="blog-inline-link"
+          href="{{ entry.url }}"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="bucket_entries"
+          data-analytics-bucket="articles"
+          data-analytics-entry="{{ entry.title }}">
+          Read article
+        </a>
       </article>
       {% endfor %}
     </div>
@@ -38,8 +52,20 @@ description: Browse Musifer articles for editorial perspective, field notes, and
     <div class="blog-empty-state">
       <p>Articles will stay selective here. The lane exists now so the public structure is honest before the library fills out.</p>
       <div class="blog-browse-links">
-        <a class="btn" href="/blog/">Return to the blog hub</a>
-        <a class="btn btn--secondary" href="/contact/community/">Open community pathways</a>
+        <a class="btn"
+          href="/blog/"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="bucket_empty_state"
+          data-analytics-bucket="articles"
+          data-analytics-destination="blog_hub">
+          Return to the blog hub
+        </a>
+        <a class="btn btn--secondary"
+          href="/contact/community/"
+          data-analytics-contact="community"
+          data-analytics-surface="bucket_empty_state">
+          Open community pathways
+        </a>
       </div>
     </div>
     {% endif %}

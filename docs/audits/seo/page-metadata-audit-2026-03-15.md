@@ -1,6 +1,6 @@
 # SEO Page Metadata Audit
 
-Snapshot date: 2026-03-15 (branch `experimental`)
+Snapshot date: 2026-03-15 (reviewed against current `main` source)
 
 ## Purpose and scope
 - Audit current routed pages for description-metadata readiness using `docs/planning/SEO/strategy.md`, `docs/planning/SEO/page-intent-map.md`, `docs/planning/SEO/schema-plan.md`, and `docs/planning/SEO/launch-checklist.md` as the reference framework.
@@ -34,8 +34,8 @@ Snapshot date: 2026-03-15 (branch `experimental`)
   - `src/_data/blog.js` carries `canonicalUrl`, but that value is not surfaced to the layout today.
   - `src/admin/index.html` bypasses the shared layout entirely, so it does not inherit canonical, description, Open Graph, or robots handling.
 - Stale output note:
-  - `src/_data/site.js` currently sets the canonical host to `https://eetazeeba.github.io`, which matches the SEO planning docs' "use the live host until cutover" guidance.
-  - Existing `_site/` HTML still contains older `https://musifer.studio` output in at least one spot, so source files were used as the authority for this audit.
+  - `src/_data/site.js` currently sets the canonical host to `https://musifer.studio`, which matches the current SEO planning guidance for active Phase 1.
+  - `_site/` may still contain older generated output, so source files were used as the authority for this audit.
 
 ## Page inventory summary
 
@@ -198,7 +198,7 @@ These routes are either current priority surfaces or closely tied to them:
 
 ## Manual-review items and ambiguities
 - The audit treats current routed/nav-linked scaffold pages as "likely-public" because they are live in source and reachable today, even where planning docs say they should only be index targets once substantive.
-- `_site/` contains older generated canonical output that still points at `musifer.studio` in at least one page. Source configuration in `src/_data/site.js` was used as the authority for this audit.
+- `_site/` may contain older generated output, so source configuration in `src/_data/site.js` was used as the authority for this audit.
 - Title tags were not the primary audit target, but a few still read like scaffolds rather than search-facing titles:
   - homepage uses `Homepage | Musifer`
   - some child pages still use bare labels such as `Production | Musifer` or `Legal | Musifer`

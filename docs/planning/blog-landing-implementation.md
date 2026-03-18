@@ -2,6 +2,8 @@
 
 Snapshot date: 2026-03-12 (branch `experimental`)
 
+Status note: historical implementation snapshot retained for traceability; use current templates and tracker docs for live repo state.
+
 Purpose
 - Record how the `blog` wireframe was translated into the current Eleventy site.
 - Capture the minimal routing/data work that was added so the landing page can point to real article URLs.

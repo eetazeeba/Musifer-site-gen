@@ -4,13 +4,23 @@ Purpose
 - Keep active planning and rollout documents grouped under `docs/planning/`.
 - Reduce path drift by providing a stable index for planning-oriented references.
 
-Contents
-- `domain-hosting-email-rollout-plan.md`: selected infrastructure stack and phased rollout for Porkbun -> GitHub Pages -> Vercel -> Proton.
-- `jamstack-main-migration-plan.md`: branch consolidation and cutover plan/history.
-- `responsive-layout-navigation-refresh-plan.md`: responsive/navigation roadmap and phase status.
-- `responsive-layout-phase-4-content-modules-implementation-brief.md`: Phase 4 implementation-state brief tied to the roadmap.
-- `analytics-feasibility-and-implementation-plan.md`: active analytics planning/status doc (renamed from the earlier Plausible-specific filename; current near-term direction is Umami).
-- `domain-direction-musifer-studio-art.md`: domain naming decision record (`musifer.studio` primary, `musifer.art` backup/protection); vendor and rollout sequencing now live in the rollout plan.
+## Active References
+- [domain-hosting-email-rollout-plan.md](domain-hosting-email-rollout-plan.md): current infrastructure rollout sequence for Porkbun -> GitHub Pages -> Vercel -> Proton.
+- [analytics-feasibility-and-implementation-plan.md](analytics-feasibility-and-implementation-plan.md): current analytics feasibility/status reference; near-term direction remains Umami.
+- [SEO/strategy.md](SEO/strategy.md), [SEO/schema-plan.md](SEO/schema-plan.md), and [SEO/launch-checklist.md](SEO/launch-checklist.md): current SEO policy, schema guidance, and launch-validation reference set.
+
+## Historical Implementation Notes and Completed Records
+- [analytics-rollout-plan.md](analytics-rollout-plan.md): historical analytics implementation snapshot from the earlier `experimental` phase.
+- [blog-landing-implementation.md](blog-landing-implementation.md): historical implementation snapshot for the `blog` landing-page rollout.
+- [services-landing-implementation.md](services-landing-implementation.md): historical implementation snapshot for the `services` landing-page rollout.
+- [responsive-layout-navigation-refresh-plan.md](responsive-layout-navigation-refresh-plan.md): completed responsive/navigation roadmap retained for planning and implementation traceability.
+- [jamstack-main-migration-plan.md](jamstack-main-migration-plan.md): completed branch-consolidation and cutover record.
+- [domain-direction-musifer-studio-art.md](domain-direction-musifer-studio-art.md): historical domain naming decision record; live rollout sequencing now belongs to the rollout plan.
+
+## Supporting Drafts and Experiments
+- [responsive-layout-phase-4-content-modules-implementation-brief.md](responsive-layout-phase-4-content-modules-implementation-brief.md): implementation-state brief for the completed Phase 4 module system.
+- [privacy-policy-draft.md](privacy-policy-draft.md): working draft for future published privacy/disclosure copy.
+- [homepage-vellum-background-experiment.md](homepage-vellum-background-experiment.md): homepage-specific visual experiment and follow-up note.
 
 Notes
 - Primary tracker remains at `docs/high-level-project-tracking.md` for quick top-level access.

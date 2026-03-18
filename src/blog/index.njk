@@ -65,7 +65,13 @@ contactLinks:
             <h3 class="card-title">{{ card.title }}</h3>
             <p>{{ card.summary }}</p>
             <p class="blog-featured-meta">{{ card.meta }}</p>
-            <a class="btn{% if not loop.first %} btn--soft-emphasis{% endif %}" href="{{ card.href }}">{{ card.ctaLabel }}</a>
+            <a class="btn{% if not loop.first %} btn--soft-emphasis{% endif %}"
+              href="{{ card.href }}"
+              data-analytics-event="blog_engagement"
+              data-analytics-surface="featured_lane"
+              data-analytics-entry="{{ card.title }}">
+              {{ card.ctaLabel }}
+            </a>
           </article>
           {% endfor %}
         </div>
@@ -112,7 +118,13 @@ contactLinks:
 
     <div class="blog-browse-links" aria-label="Blog browse links">
       {% for bucket in blog.publicBuckets %}
-      <a class="btn btn--secondary" href="{{ bucket.url }}">{{ bucket.title }}</a>
+      <a class="btn btn--secondary"
+        href="{{ bucket.url }}"
+        data-analytics-event="blog_engagement"
+        data-analytics-surface="browse_lanes"
+        data-analytics-bucket="{{ bucket.title }}">
+        {{ bucket.title }}
+      </a>
       {% endfor %}
     </div>
   </section>
@@ -135,7 +147,13 @@ contactLinks:
         <h3 class="card-title">{{ bucket.title }}</h3>
         <p>{{ bucket.summary }}</p>
         <p class="blog-inline-meta">{{ bucket.meta }}</p>
-        <a class="blog-inline-link" href="{{ bucket.url }}">{{ bucket.ctaLabel }}</a>
+        <a class="blog-inline-link"
+          href="{{ bucket.url }}"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="priority_lane"
+          data-analytics-bucket="{{ bucket.title }}">
+          {{ bucket.ctaLabel }}
+        </a>
       </article>
       {% endfor %}
     </div>
@@ -158,7 +176,13 @@ contactLinks:
         <p class="blog-inline-meta">{{ entry.metadataLabel }}</p>
         <h3 class="card-title">{{ entry.title }}</h3>
         <p>{{ entry.summary }}</p>
-        <a class="blog-inline-link" href="{{ entry.url }}">Read post</a>
+        <a class="blog-inline-link"
+          href="{{ entry.url }}"
+          data-analytics-event="blog_engagement"
+          data-analytics-surface="recent_posts"
+          data-analytics-entry="{{ entry.title }}">
+          Read post
+        </a>
       </article>
       {% endfor %}
     </div>
@@ -179,7 +203,17 @@ contactLinks:
         <article class="blog-route-card">
           <h3 class="card-title">{{ item.title }}</h3>
           <p>{{ item.body }}</p>
-          <a class="blog-inline-link" href="{{ item.href }}">{{ item.label }}</a>
+          <a class="blog-inline-link"
+            href="{{ item.href }}"
+            data-analytics-event="service_interest"
+            {% if item.href == "/services/rates-quote/" %}
+            data-analytics-service="rates_quote"
+            {% else %}
+            data-analytics-service="production_support"
+            {% endif %}
+            data-analytics-surface="blog_services_bridge">
+            {{ item.label }}
+          </a>
         </article>
         {% endfor %}
       </div>
@@ -202,7 +236,16 @@ contactLinks:
       <article class="blog-route-card">
         <h3 class="card-title">{{ item.title }}</h3>
         <p>{{ item.body }}</p>
-        <a class="blog-inline-link" href="{{ item.href }}">{{ item.label }}</a>
+        <a class="blog-inline-link"
+          href="{{ item.href }}"
+          {% if item.href == "/contact/community/" %}
+          data-analytics-contact="community"
+          {% else %}
+          data-analytics-contact="work_with_us"
+          {% endif %}
+          data-analytics-surface="blog_contact_bridge">
+          {{ item.label }}
+        </a>
       </article>
       {% endfor %}
     </div>

@@ -2,6 +2,8 @@
 
 Snapshot date: 2026-03-11 (branch `experimental`)
 
+Status note: historical implementation snapshot retained for traceability; use current templates and tracker docs for live repo state.
+
 Purpose
 - Record how the locked `Services` wireframe was translated into the current Eleventy site.
 - Capture the implementation boundaries for this pass so later work does not sprawl by accident.

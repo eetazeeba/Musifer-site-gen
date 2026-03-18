@@ -3,9 +3,9 @@
 ## Current decision
 - Preferred primary public domain direction: `musifer.studio`.
 - Secondary/backup/brand-protection direction: `musifer.art`.
-- Decision status (as of 2026-03-13): domains purchased; `musifer.studio` is the canonical public domain for active Phase 1, and `musifer.art` is retained for backup/brand protection.
+- Decision status (as of 2026-03-13): domains purchased; the repo targets `musifer.studio` as the canonical public domain for active Phase 1, while live custom-domain activation still depends on external Pages/DNS verification, and `musifer.art` is retained for backup/brand protection.
 - `.com` is not currently the preferred acquisition target due to cost/squatting constraints.
-- GitHub Pages custom-domain hosting is the transitional live state from `main`; Vercel and Proton remain deferred to later phases.
+- GitHub Pages custom-domain hosting is the transitional target state from `main`; live activation still depends on external Pages/DNS verification, and Vercel and Proton remain deferred to later phases.
 
 ## Rationale
 - Why `musifer.studio` is preferred:
