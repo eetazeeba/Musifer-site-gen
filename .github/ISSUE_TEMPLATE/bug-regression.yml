@@ -1,0 +1,256 @@
+name: Bug / Regression
+description: Report broken behavior, regressions, functional errors, accessibility failures, and other defects that need investigation.
+title: "[Bug]: "
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: input
+    id: bug_id
+    attributes:
+      label: Bug ID
+      description: Leave blank if this is a new item and does not already have a tracker ID.
+      placeholder: FB-###
+    validations:
+      required: false
+
+  - type: input
+    id: title_summary
+    attributes:
+      label: Title / Summary
+      description: Short, specific summary of the broken behavior.
+      placeholder: Mobile nav toggle stops expanding submenu after header script update
+    validations:
+      required: true
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      description: Intake status for the issue.
+      options:
+        - NEW
+        - TRIAGED
+        - PLANNED
+        - IN PROGRESS
+        - BLOCKED
+        - DONE
+        - WON'T FIX
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: |
+        P0: Critical or blocking issues requiring immediate attention
+        P1: High-impact issues likely to affect many users or break important functionality
+        P2: Meaningful issues affecting a narrower set of users, routes, or workflows
+        P3: Limited-scope bugs with noticeable impact or clear correctness issues
+        P4: Edge cases, low-severity defects, or observations worth tracking
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+        - P4
+    validations:
+      required: true
+
+  - type: input
+    id: area_surface
+    attributes:
+      label: Area / Surface
+      description: Specific feature, pattern, system, or interface area affected by the bug.
+      placeholder: Primary navigation, blog card rail, contact form, build output, metadata helper
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected_routes_components
+    attributes:
+      label: Affected Route(s) or Component(s)
+      description: Optional. List the page route, template, partial, stylesheet, script, or component involved.
+      placeholder: |
+        /blog/
+        src/_includes/header.html
+        src/_assets/scripts/nav.js
+        src/_assets/CSS/_nav.scss
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: problem_statement
+    attributes:
+      label: Problem Statement
+      description: Describe the broken or regressed behavior as currently observed. State what is happening, not how to fix it.
+      placeholder: Describe the current failure, visible defect, or incorrect behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: Describe what should happen instead.
+      placeholder: Describe the intended or previously working behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Reproduction Steps
+      description: List the steps needed to reproduce the issue.
+      placeholder: |
+        1. Visit /blog/ on mobile width
+        2. Open the compact navigation drawer
+        3. Tap a parent item with children
+        4. Observe that the submenu does not expand
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_result
+    attributes:
+      label: Actual Result
+      description: Describe the result you currently get after following the reproduction steps.
+      placeholder: Describe the incorrect result, error state, or failed interaction.
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_impact
+    attributes:
+      label: User Impact
+      description: Describe who is affected and why it matters.
+      placeholder: |
+        - Blocks access to key navigation paths on mobile
+        - Prevents users from reaching child pages
+        - Creates an accessibility failure for keyboard or touch users
+        - Damages trust by making the site feel unstable
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity_scope
+    attributes:
+      label: Severity / Scope
+      description: Optional. Best estimate of how broadly the issue is affecting usage.
+      options:
+        - single route or component
+        - multiple related routes
+        - site-wide
+        - build or deploy pipeline
+        - unknown
+    validations:
+      required: false
+
+  - type: dropdown
+    id: regression
+    attributes:
+      label: Regression?
+      description: Indicate whether this issue is a confirmed or suspected regression.
+      options:
+        - yes - confirmed regression
+        - maybe - suspected regression
+        - no - likely longstanding issue
+        - unknown
+    validations:
+      required: true
+
+  - type: input
+    id: first_seen
+    attributes:
+      label: First Seen
+      description: Optional. Note when the issue was first observed.
+      placeholder: 2026-04-09 after nav refactor merge
+    validations:
+      required: false
+
+  - type: dropdown
+    id: likely_root_area
+    attributes:
+      label: Likely Root Area
+      description: Optional best-guess source of the issue.
+      options:
+        - markup / template structure
+        - CSS layout
+        - responsive behavior
+        - interaction script
+        - content model
+        - navigation data
+        - metadata / SEO handling
+        - build / deployment
+        - third-party integration
+        - unknown
+    validations:
+      required: false
+
+  - type: textarea
+    id: console_errors_logs
+    attributes:
+      label: Console Errors / Logs
+      description: Optional. Paste any relevant browser console output, build log messages, or error text.
+      placeholder: Paste error messages, stack traces, or build output snippets if available.
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Define what must be true for the bug to count as resolved.
+      placeholder: |
+        - Submenu expands correctly on supported mobile breakpoints
+        - Keyboard and touch interaction both work
+        - No console errors fire during interaction
+        - No regression to desktop dropdown behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_references
+    attributes:
+      label: Evidence / References
+      description: Optional. List screenshots, recordings, notes, related commits, or linked discussion relevant to the issue.
+      placeholder: |
+        docs/issues/screenshots/FB-012-mobile-nav-submenu-failure.png
+        Commit abc1234
+        QA notes from 2026-04-09
+    validations:
+      required: false
+
+  - type: textarea
+    id: files_likely_impacted
+    attributes:
+      label: Files Likely Impacted
+      description: Optional. List likely implementation targets if already known.
+      placeholder: |
+        src/_includes/header.html
+        src/_assets/scripts/nav.js
+        src/_assets/CSS/_nav.scss
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes_constraints
+    attributes:
+      label: Notes / Constraints
+      description: Optional. Capture guardrails, known limitations, or things that must not regress while fixing this.
+      placeholder: Preserve desktop dropdown behavior, avoid changing tab order, and do not break existing rail interactions.
+    validations:
+      required: false
+
+  - type: textarea
+    id: completion_notes
+    attributes:
+      label: Completion Notes
+      description: Optional. Usually filled later if creating or documenting a resolved issue retroactively.
+      placeholder: Brief note on what changed, where, and anything still deferred.
+    validations:
+      required: false
