@@ -35,7 +35,7 @@ Favor correctness, clarity, maintainability, and compatibility with the existing
 ## Safe Defaults
 
 - Treat the checked-out repository contents as the source of truth over earlier generated notes.
-- Treat GitHub Issues + GitHub Project as the canonical backlog/issue intake system; treat `docs/issues/` as historical archive context unless a task explicitly reopens that workflow.
+- Do not rely on assistant memory across sessions — treat each task as starting from the current repo state.
 - When reporting file references in saved docs, optimize for portability and human readability first.
 
 ## Workflow
@@ -89,7 +89,7 @@ Favor correctness, clarity, maintainability, and compatibility with the existing
 
 ## Expected Task Flow
 For non-trivial tasks:
-1. Provide a brief plan before editing when the tool supports it.
+1. Provide a brief plan before editing, when the tool supports it.
 2. Make the smallest reliable change.
 3. Validate with the most relevant available checks.
 4. Summarize:
@@ -106,11 +106,17 @@ For non-trivial tasks:
 - Be explicit about affected files, tradeoffs, and regression risks.
 - Avoid unnecessary dependencies.
 
+## Assistant Neutrality
+- Prefer repo conventions and documented workflow over assistant defaults.
+- Do not assume any specific assistant supports a particular planning, patching, or execution workflow.
+- Keep changes easy to review manually in VS Code.
+- When tool behavior conflicts with repo docs, follow repo docs.
+
 ## Documentation
 - Treat canonical docs as the source of truth, not temporary plan/audit outputs.
 - If behavior, workflow, tooling, provider choice, or project status changes, update the relevant canonical docs in the same task when safe to do so.
 - Mark snapshot or audit docs clearly if they are not source-of-truth documents.
-- Do not treat assistant-generated outputs as canonical unless they are reviewed and committed to repo docs.
+- Do not treat assistant-generated outputs as canonical unless they have been reviewed and committed to repo docs.
 - If stale docs are discovered outside task scope, call them out explicitly in the completion notes.
 
 
