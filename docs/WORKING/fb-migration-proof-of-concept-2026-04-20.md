@@ -18,10 +18,12 @@ Notes
 - Suggested labels beyond the template defaults are included as triage guidance.
 
 Execution checkpoint (`2026-04-20`)
-- Created: [#14](https://github.com/eetazeeba/Musifer-site-gen/issues/14) (`[Polish]: [FB-001] ...`)
+- Created: [#13](https://github.com/eetazeeba/Musifer-site-gen/issues/13) (`[Polish]: [FB-001] ...`) — correct issue
 - Created: [#15](https://github.com/eetazeeba/Musifer-site-gen/issues/15) (`[Polish]: [FB-006] ...`)
 - Created: [#16](https://github.com/eetazeeba/Musifer-site-gen/issues/16) (`[Polish]: Phase verbiage clean up ...`)
-- Closed duplicate: [#13](https://github.com/eetazeeba/Musifer-site-gen/issues/13) (duplicate of `#14`)
+- Malformed duplicate: [#14](https://github.com/eetazeeba/Musifer-site-gen/issues/14) — created by a broken heredoc/multiline shell entry; supersedes #13 in GitHub numbering but is the incorrect copy. Should be closed as duplicate of #13.
+
+Note on issue numbering error: The in-session execution note originally recorded #13 as the duplicate and #14 as the correct issue. This was reversed. #13 was the first successful creation attempt; #14 was a malformed artifact of the heredoc failure.
 
 ## Draft 1
 
@@ -234,3 +236,33 @@ Notes / Constraints
 
 - This is intentionally a polish/refactoring follow-up, not a blocker for the current proof-of-concept migration.
 - Defer broader historical-document wording cleanup unless a later pass explicitly expands scope.
+
+---
+
+## GitHub CLI environment notes (2026-04-20)
+
+These issues arose during the gh CLI setup session and apply to any future chat-driven terminal execution in this environment.
+
+### Browser auto-open unavailable
+- `gh auth login --web` cannot launch a browser automatically because no opener (such as `xdg-open`) is present in the shell environment.
+- Not a blocker: the device-code URL can be opened manually.
+- Keep in mind for any future interactive auth flows.
+
+### Multiline shell quoting breaks issue creation
+- Commands using multiline quoted `--body "..."` content were cut off before completion.
+- Issue creation stalled or never completed even when the intended command was otherwise valid.
+
+### Heredoc prompts get stuck
+- `cat <<'EOF'` style input leaves the shell in a continuation prompt until interrupted.
+- These runs are unreliable for chat-driven terminal execution and required cleanup retries.
+
+### One batch was cancelled before completion
+- An attempted issue-creation batch was cancelled mid-run.
+- Required a full retry with a safer single-command format.
+
+### Working pattern
+Use `gh issue create` in a single non-interactive command. Preferred options in order:
+1. `--body-file <file>` when a stable temp file is practical.
+2. `--body $'first line\nsecond line'` — single escaped Bash string with literal `\n`.
+
+Avoid chat-driven multiline terminal entry for issue bodies in this environment.

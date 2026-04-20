@@ -14,6 +14,8 @@
         "/^export PATH=\"\\$HOME/\\.local/bin:\\$PATH\"; gh issue view 12 --repo eetazeeba/eetazeeba\\.github\\.io --json number,title,state,body,url$/": {
             "approve": true,
             "matchCommandLine": true
-        }
+        },
+        "git add": true,
+        "git commit": true
     }
 }

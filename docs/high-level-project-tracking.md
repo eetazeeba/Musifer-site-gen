@@ -11,6 +11,25 @@ Purpose
 - New issue intake should use `.github/ISSUE_TEMPLATE/bug-regression.yml` or `.github/ISSUE_TEMPLATE/polish-feedback.yml`.
 - Existing `FB-###` references may be preserved in issue titles/bodies for migration traceability.
 
+## Planning taxonomy and GitHub field mapping (design note, 2026-04-20 UTC)
+- Adopted planning vocabulary: `Saga` > `Arc` > `Episode` (see `AGENTS.md` for definitions).
+- `Arc` is the unit that maps most naturally to a GitHub Project iteration or status grouping.
+- `Episode` maps to a single GitHub Issue.
+- Design decision pending: `Saga` semantic intent could map to a GitHub Milestone field. This would give Sagas a lightweight lifecycle marker (open/closed, due date) without introducing a non-standard field. Deferred — to be decided before the first Saga closes.
+
+## Copilot prompt tooling baseline (2026-04-20 UTC)
+- Prompt-tooling planning/reference document: `docs/planning/copilot-prompt-tooling.md`.
+- Temporary prompt notes were moved from `docs/WORKING/TEMP-copilot-prompt-tooling.md` into the planning baseline above.
+- Target implementation locations for reusable assistant tooling:
+  - `.github/copilot-instructions.md` for repository-wide always-on guidance.
+  - `.github/prompts/*.prompt.md` for task-specific reusable prompts.
+- MVP prompt set is now in place:
+  - `.github/prompts/core-execution.prompt.md`
+  - `.github/prompts/bugfix.prompt.md`
+  - `.github/prompts/docs-sync.prompt.md`
+  - `.github/prompts/plan-only.prompt.md`
+- Prompt-library rollout should continue with MVP-first usage feedback before adding phase-2 prompts.
+
 ## Current operating model (2026-03-13)
 - Canonical source branch and clean sync/deploy branch: `main`
 - Daily work happens on short-lived feature branches merged back through reviewed pull requests.

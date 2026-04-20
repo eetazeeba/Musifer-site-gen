@@ -2,10 +2,10 @@
 
 ## Purpose
 
-This file defines repo-local working preferences for Codex-style coding agents and similar assistants operating in this repository.
+This file defines repo-local working preferences for AI coding assistants and similar tools operating in this repository.
 
 ## Scope
-This repo is primarily worked on in VS Code and uses Codex for implementation support.
+This repo is primarily worked on in VS Code and may use GitHub Copilot, chat-based coding assistants, and similar implementation tools.
 Default stack: HTML, CSS, JavaScript.
 Favor correctness, clarity, maintainability, and compatibility with the existing codebase.
 
@@ -50,10 +50,22 @@ Favor correctness, clarity, maintainability, and compatibility with the existing
 - Use an `Arc` for each major migration/workstream chunk.
 - Use `Episode` for actionable implementation steps inside an `Arc`.
 - Completion notes should state outcomes in this form: `Arc X <name> is complete after Episodes ... were completed.`
+- `Saga` semantic intent may map to a GitHub Milestone field (design decision deferred — see `docs/high-level-project-tracking.md`).
+
+## Copilot Prompt Workflow
+- Prompt-tooling planning baseline: `docs/planning/copilot-prompt-tooling.md`.
+- Repository-wide always-on guidance should live in `.github/copilot-instructions.md`.
+- Task-specific reusable prompts should live in `.github/prompts/*.prompt.md`.
+- Prefer the most specific reusable prompt that matches the task instead of inventing one-off prompt structures.
+
+## GitHub CLI (gh) — shell environment constraints
+- No browser opener (`xdg-open`) is present; `gh auth login --web` requires manually opening the device-code URL.
+- Multiline `--body "..."` strings and heredoc (`<<'EOF'`) inputs are unreliable in chat-driven terminal sessions.
+- Safe pattern for `gh issue create`: use `--body-file <file>` or a single escaped Bash string `--body $'line1\nline2'`.
 
 ## Expected Task Flow
 For non-trivial tasks:
-1. State a brief plan.
+1. Provide a brief plan before editing when the tool supports it.
 2. Make the smallest reliable change.
 3. Validate with the most relevant available checks.
 4. Summarize:
@@ -74,6 +86,7 @@ For non-trivial tasks:
 - Treat canonical docs as the source of truth, not temporary plan/audit outputs.
 - If behavior, workflow, tooling, provider choice, or project status changes, update the relevant canonical docs in the same task when safe to do so.
 - Mark snapshot or audit docs clearly if they are not source-of-truth documents.
+- Do not treat assistant-generated outputs as canonical unless they are reviewed and committed to repo docs.
 - If stale docs are discovered outside task scope, call them out explicitly in the completion notes.
 
 
