@@ -7,6 +7,7 @@ Reusable Copilot prompt files for this repository.
 - `bugfix.prompt.md`: targeted defect and regression fixes.
 - `docs-sync.prompt.md`: align canonical docs with current behavior and workflow.
 - `plan-only.prompt.md`: analysis and implementation planning with no edits.
+- `gh-write-preflight.prompt.md`: GitHub mutation preflight and minimal write execution with deterministic fallback behavior.
 
 ## Usage guidance
 - Use `.github/copilot-instructions.md` for always-on repository guidance.

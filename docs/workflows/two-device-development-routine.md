@@ -159,6 +159,40 @@ git push
 
 After that, follow the single PR review and **Squash and merge** sequence above.
 
+## GitHub CLI Issue Intake Reliability
+
+Use this when creating GitHub issues from terminal sessions where multiline shell input can be unreliable.
+
+### Preflight
+
+1. Confirm shell prompt is normal (no continuation prompt such as `>`).
+2. Select issue type first, then use the matching template defaults:
+   - Bug: title prefix `[Bug]: ` and labels `type:bug`, `needs-triage`.
+   - Polish: title prefix `[Polish]: ` and labels `type:polish`, `needs-triage`.
+3. If template-default labels are missing in the target repo, keep template title prefixes unchanged, use the closest existing label as a temporary fallback, and note the mismatch for follow-up label reconciliation.
+4. Prepare issue content in a markdown file and use `--body-file`.
+5. Run one create command and capture the returned issue URL.
+
+### Safe commands
+
+```bash
+gh issue create --title "[Bug]: <summary>" --label "type:bug" --label "needs-triage" --body-file /tmp/issue-body.md
+gh issue create --title "[Polish]: <summary>" --label "type:polish" --label "needs-triage" --body-file /tmp/issue-body.md
+```
+
+If canonical `type:*` or `needs-triage` labels are not present in the target repo, use the closest existing label only for that run and open a follow-up task to restore template-label parity.
+
+### Avoid
+
+- Multiline quoted `--body "..."` strings.
+- Heredoc input (`cat <<'EOF' ...`) in chat-driven terminal sessions.
+
+### If a run fails or creates malformed output
+
+1. Stop and inspect whether the issue was partially created.
+2. Create a corrected issue using `--body-file`.
+3. Close malformed duplicates and link to the canonical replacement issue.
+
 ## Recovery Commands
 
 ### Discard local drift on `main`

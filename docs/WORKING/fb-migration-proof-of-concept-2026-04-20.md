@@ -260,9 +260,37 @@ These issues arose during the gh CLI setup session and apply to any future chat-
 - An attempted issue-creation batch was cancelled mid-run.
 - Required a full retry with a safer single-command format.
 
-### Working pattern
-Use `gh issue create` in a single non-interactive command. Preferred options in order:
-1. `--body-file <file>` when a stable temp file is practical.
-2. `--body $'first line\nsecond line'` — single escaped Bash string with literal `\n`.
+### Safe invocation patterns
+- **Preferred:**
+  - `gh issue create --title "..." --body-file /tmp/issue-body.md`
+  - `gh issue create --title "..." --body $'first line\nsecond line'`
+  - `gh issue create --title "[Bug]: ..." --label "type:bug" --label "needs-triage" --body-file /tmp/issue-body.md`
+  - `gh issue create --title "[Polish]: ..." --label "type:polish" --label "needs-triage" --body-file /tmp/issue-body.md`
+- **Avoid:**
+  - Multiline quoted `--body "..."` (will be cut off)
+  - Heredoc input (`cat <<'EOF' ...`) (will hang the shell)
 
-Avoid chat-driven multiline terminal entry for issue bodies in this environment.
+### Template-conformance guardrails
+- Treat [.github/ISSUE_TEMPLATE/bug-regression.yml](../../.github/ISSUE_TEMPLATE/bug-regression.yml) and [.github/ISSUE_TEMPLATE/polish-feedback.yml](../../.github/ISSUE_TEMPLATE/polish-feedback.yml) as the intake schema source of truth.
+- Bug issue defaults: title prefix `[Bug]: ` with labels `type:bug` and `needs-triage`.
+- Polish issue defaults: title prefix `[Polish]: ` with labels `type:polish` and `needs-triage`.
+- Keep command examples and migration notes aligned to those defaults to prevent taxonomy drift.
+
+### Preflight checklist (before each issue create)
+1. Confirm shell is at a normal prompt (not continuation `>`).
+2. Confirm issue type (Bug vs Polish) based on the corresponding template.
+3. Confirm title prefix and baseline labels match the selected template.
+4. Confirm the body markdown file exists.
+5. Run `gh issue create` once and capture the returned issue URL immediately.
+
+### Troubleshooting
+- If issue creation stalls or hangs, check for multiline quoting or heredoc usage.
+- If the body is truncated, switch to `--body-file` or `$'...'` with `\n` for newlines.
+- Always verify the created issue in the GitHub UI for completeness.
+
+### Smoke test result (`2026-04-23`)
+- Created with body-file pattern: [#17](https://github.com/eetazeeba/Musifer-site-gen/issues/17) (`[Polish]: Heredoc prompt issue stalls gh issue creation in chat-driven terminal`).
+- Verification: issue creation returned a URL and preserved markdown line breaks in the body.
+- Constraint discovered: target repository labels currently include `polish` but do not include template-default labels `type:polish` / `needs-triage`.
+- Operational fallback used for this run: title prefix `[Polish]:` plus existing repo label `polish`.
+- Canonical intake defaults remain unchanged in templates; open a follow-up to restore `type:*` and `needs-triage` label parity in the target repo.

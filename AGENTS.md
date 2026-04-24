@@ -63,6 +63,30 @@ Favor correctness, clarity, maintainability, and compatibility with the existing
 - Multiline `--body "..."` strings and heredoc (`<<'EOF'`) inputs are unreliable in chat-driven terminal sessions.
 - Safe pattern for `gh issue create`: use `--body-file <file>` or a single escaped Bash string `--body $'line1\nline2'`.
 
+### Template-safety requirements (prevent issue intake drift)
+- Treat `.github/ISSUE_TEMPLATE/bug-regression.yml` and `.github/ISSUE_TEMPLATE/polish-feedback.yml` as the source of truth for issue intake structure.
+- Keep Bug items aligned to title prefix `[Bug]: ` and labels `type:bug` + `needs-triage`.
+- Keep Polish items aligned to title prefix `[Polish]: ` and labels `type:polish` + `needs-triage`.
+- If template-default labels are missing in the target repo, keep template-aligned title prefixes as canonical, use the closest existing label only as a temporary fallback, and record the mismatch for follow-up label reconciliation.
+- Do not invent alternate field taxonomies in issue body text that conflict with template intent.
+
+### Safe invocation patterns
+- **Preferred:**
+  - `gh issue create --title "..." --body-file /tmp/issue-body.md`
+  - `gh issue create --title "..." --body $'first line\nsecond line'`
+  - `gh issue create --title "[Bug]: ..." --label "type:bug" --label "needs-triage" --body-file /tmp/issue-body.md`
+  - `gh issue create --title "[Polish]: ..." --label "type:polish" --label "needs-triage" --body-file /tmp/issue-body.md`
+- **Avoid:**
+  - Multiline quoted `--body "..."` (will be cut off)
+  - Heredoc input (`cat <<'EOF' ...`) (will hang the shell)
+
+### Troubleshooting
+- If issue creation stalls or hangs, check for multiline quoting or heredoc usage.
+- If the body is truncated, switch to `--body-file` or `$'...'` with `\n` for newlines.
+- Always verify the created issue in the GitHub UI for completeness.
+- Before running `gh issue create`, confirm issue type (Bug vs Polish) and enforce template-aligned title prefix and baseline labels.
+- If `type:*` or `needs-triage` labels are unavailable in the target repo, do not rename template defaults in docs; apply available fallback labels for the run and open a follow-up to restore canonical label parity.
+
 ## Expected Task Flow
 For non-trivial tasks:
 1. Provide a brief plan before editing when the tool supports it.
