@@ -93,6 +93,9 @@ bodyClass: page-contact page-atmosphere page-atmosphere--vellum
           placeholder="{{ form.fields.message.placeholder }}"></textarea>
       </div>
 
+      <!-- Honeypot field for bot prevention (must be empty) -->
+      <input type="hidden" name="_honeypot" value="">
+
       <div class="contact-form__actions">
         <button
           class="btn"

@@ -2,3 +2,5 @@ src/_assets/Images/Editing
 node_modules/
 _site/
 .DS_Store
+entra-app.key
+entra-app.crt
