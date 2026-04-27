@@ -4,8 +4,106 @@ title: Contact
 bodyClass: page-contact page-atmosphere page-atmosphere--vellum
 ---
 
-<section class="card">
-  <h1 class="card-title">Contact</h1>
-  <p>Starter scaffold page. Content pending.</p>
-  <a class="btn" href="/">Back to home</a>
-</section>
+<div class="l-page-shell l-module-stack">
+
+  <section class="card" aria-labelledby="contact-heading">
+    <h1 class="card-title" id="contact-heading">{{ form.title }}</h1>
+    <p class="lead">{{ form.intro }}</p>
+    <p class="contact-response-note">{{ form.responseNote }}</p>
+  </section>
+
+  <section class="card" aria-labelledby="contact-form-heading">
+    <h2 class="card-title" id="contact-form-heading">Get in touch</h2>
+    <p class="contact-form__legend"><span aria-hidden="true">*</span> Required fields</p>
+
+    <div class="contact-status contact-status--success" role="status" aria-live="polite" hidden>
+      <strong>{{ form.success.heading }}</strong>
+      <p>{{ form.success.body }}</p>
+    </div>
+
+    <div class="contact-status contact-status--error" role="alert" aria-live="assertive" hidden>
+      <strong>{{ form.error.heading }}</strong>
+      <p>{{ form.error.body }}</p>
+    </div>
+
+    <form
+      class="contact-form"
+      method="POST"
+      {% if form.endpoint %}action="{{ form.endpoint }}"{% endif %}
+      data-analytics-surface="contact_page">
+
+      <p class="contact-form__validation-note" data-contact-validation-note role="alert" hidden>
+        Please complete the required fields before sending your message.
+      </p>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="contact-name">
+          {{ form.fields.name.label }}<span aria-hidden="true"> *</span>
+        </label>
+        <input
+          class="contact-form__control"
+          id="contact-name"
+          name="name"
+          type="text"
+          autocomplete="{{ form.fields.name.autocomplete }}"
+          required
+          aria-required="true">
+      </div>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="contact-email">
+          {{ form.fields.email.label }}<span aria-hidden="true"> *</span>
+        </label>
+        <input
+          class="contact-form__control"
+          id="contact-email"
+          name="email"
+          type="email"
+          inputmode="email"
+          autocomplete="{{ form.fields.email.autocomplete }}"
+          pattern="{{ form.fields.email.pattern }}"
+          title="{{ form.fields.email.title }}"
+          required
+          aria-required="true">
+      </div>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="contact-subject">
+          {{ form.fields.subject.label }}
+        </label>
+        <input
+          class="contact-form__control"
+          id="contact-subject"
+          name="subject"
+          type="text"
+          autocomplete="off">
+      </div>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="contact-message">
+          {{ form.fields.message.label }}<span aria-hidden="true"> *</span>
+        </label>
+        <textarea
+          class="contact-form__control contact-form__control--textarea"
+          id="contact-message"
+          name="message"
+          rows="6"
+          required
+          aria-required="true"
+          placeholder="{{ form.fields.message.placeholder }}"></textarea>
+      </div>
+
+      <div class="contact-form__actions">
+        <button
+          class="btn"
+          type="submit"
+          data-analytics-contact="contact_form_submit"
+          data-analytics-surface="contact_page">
+          {{ form.submit.label }}
+        </button>
+      </div>
+
+    </form>
+  </section>
+
+</div>

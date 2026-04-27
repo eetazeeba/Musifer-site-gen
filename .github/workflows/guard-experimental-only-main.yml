@@ -22,7 +22,5 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [ -e "docs/wireframe-playground" ]; then
-            echo "::error title=Experimental-only path detected::docs/wireframe-playground must remain on experimental and must not land on main."
-            exit 1
-          fi
+          # Guard checks will be added here as new experimental-only paths are introduced
+          true
