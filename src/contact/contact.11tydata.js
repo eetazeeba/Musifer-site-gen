@@ -11,7 +11,7 @@ module.exports = {
     title: "Send us a message",
     intro: "Have a project, question, or idea? Fill out the form below and we\u2019ll get back to you.",
     responseNote: "We typically respond within 2\u20133 business days.",
-    endpoint: "",
+      endpoint: "/api/contact",
     fields: {
       name: {
         label: "Your name",

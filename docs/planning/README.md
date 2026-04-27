@@ -7,6 +7,7 @@ Purpose
 ## Active References
 - [domain-hosting-email-rollout-plan.md](domain-hosting-email-rollout-plan.md): current infrastructure rollout sequence for Porkbun -> GitHub Pages -> Vercel -> Proton.
 - [analytics-feasibility-and-implementation-plan.md](analytics-feasibility-and-implementation-plan.md): current analytics feasibility/status reference; near-term direction remains Umami.
+- [contact-form-microsoft-365-smtp-setup.md](contact-form-microsoft-365-smtp-setup.md): implementation note for wiring Contact form delivery via Microsoft Graph certificate auth and Vercel environment variables.
 - [SEO/strategy.md](SEO/strategy.md), [SEO/schema-plan.md](SEO/schema-plan.md), and [SEO/launch-checklist.md](SEO/launch-checklist.md): current SEO policy, schema guidance, and launch-validation reference set.
 
 ## Historical Implementation Notes and Completed Records
