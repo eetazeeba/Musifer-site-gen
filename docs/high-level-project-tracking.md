@@ -2,13 +2,38 @@
 
 Status
 - Primary: source-of-truth
-- Updated: 2026-05-13
+- Updated: 2026-11-09
 - Note: Canonical project and workflow status tracker.
+- **Current Phase:** Site simplification and overhaul (Phase 2 direction set)
 
 
 Purpose
 - Keep operational and migration context out of the top-level README.
 - Track the current branch/deployment model and near-term implementation focus.
+
+## Site Simplification Direction (2026-11-09)
+**Context:** Current site has comprehensive navigation (16+ routes) and extensive planning documentation. Target: lean, conversion-focused site with 4-5 routes (Home, About, Contact, Privacy).
+
+**Baseline Preserved:** `feature/site-structure-2026-11-baseline` branch captures the current comprehensive sitemap and planning work for historical reference.
+
+**New Direction:**
+- **Home** — Hero + value props + testimonials + CTA
+- **About** — Mission, services, client testimonials, team/experience
+- **Contact** — Lead generation form with inquiry routing
+- **Privacy Policy** — Legal compliance (retained from planning)
+- **Blog** — Deferred to Phase 2 (not MVP)
+
+**Documentation Trim:**
+- Moved planning, audits, and exploration docs to `docs/archive/` to reduce context surface
+- Kept active operational docs: `cms-content-spec.md`, `sitemap.md`, `workflows/`
+- Removed duplicate/superseded planning links from README
+
+**Next Steps:**
+1. Define testimonial content and sources (who are current clients?)
+2. Finalize 3-5 core services to highlight
+3. Build Home page hero + sections
+4. Consolidate About from multiple planned pages into single page
+5. Simplify Contact form and lead flow
 
 ## Issue tracking source of truth (2026-04-20 UTC)
 - Canonical issue/backlog intake and lifecycle tracking now lives in GitHub Issues + GitHub Project.
