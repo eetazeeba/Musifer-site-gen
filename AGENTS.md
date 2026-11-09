@@ -64,6 +64,13 @@ Favor correctness, clarity, maintainability, and compatibility with the existing
 - In `Audit` mode, do not edit files; inspect, classify, and recommend.
 - In `Cleanup` mode, keep changes small and reviewable; do not delete docs unless explicitly authorized.
 
+## GitHub Issue Steward Operating Modes
+- The custom agent `.github/agents/github-issue-steward.agent.md` supports `Intake`, `Duplicate Review`, `Create Issue`, `Documentation Link`, and `Handoff` modes.
+- Default entry point is `Intake` followed by `Duplicate Review` before any issue creation.
+- Do not create issues until the user explicitly requests creation or the task explicitly requires it.
+- Always search open and closed issues for duplicates before drafting a new issue.
+- Use `--body-file` for all `gh issue create` calls; never use heredocs or multiline `--body` strings.
+
 ## GitHub CLI (gh) — shell environment constraints
 - No browser opener (`xdg-open`) is present; `gh auth login --web` requires manually opening the device-code URL.
 - `jq` is available in the local shell environment and should be preferred for structured `gh api` parsing when JSON verification is needed.
